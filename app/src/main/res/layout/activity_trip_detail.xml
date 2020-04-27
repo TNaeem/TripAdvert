@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TripDetailsActivity">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/main_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_marginBottom="10dp"
+        app:cardElevation="10dp"
+        tools:ignore="MissingConstraints">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/activity_trip_detail_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="275dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/trip_location"
+                    android:transitionName="single_trip_logo"/>
+
+                <ImageView
+                    android:id="@+id/activity_trip_details_back_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/icon_back"
+                    android:clickable="true"/>
+                <TextView
+                    android:id="@+id/trip_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:alpha="0.8"
+                    android:paddingTop="10dp"
+                    android:text="Title of trip"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBottom="@+id/activity_trip_detail_image"/>
+            </RelativeLayout>
+
+
+            <include layout="@layout/organizer_layout" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_card_view">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.alespero.expandablecardview.ExpandableCardView
+                android:id="@+id/profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:title="Passengers"
+                app:icon="@drawable/icon_location"
+                app:inner_view="@layout/layout_trip_details_detail"
+                app:expandOnClick="true"
+                app:animationDuration="300"
+                app:startExpanded="false"/>
+
+            <com.alespero.expandablecardview.ExpandableCardView
+                android:id="@+id/activity_trip_details"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:title="Details"
+                app:icon="@drawable/details"
+                app:inner_view="@layout/layout_trip_details_detail"
+                app:expandOnClick="true"/>
+            <com.alespero.expandablecardview.ExpandableCardView
+                android:id="@+id/activity_trip_schedule"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:title="Schedule"
+                app:icon="@drawable/schedule"
+                app:inner_view="@layout/layout_trip_details_detail"
+                app:expandOnClick="true"/>
+            <com.alespero.expandablecardview.ExpandableCardView
+                android:id="@+id/activity_trip_comments"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:title="Comments"
+                app:icon="@drawable/comment"
+                app:inner_view="@layout/layout_trip_details_detail"
+                app:expandOnClick="true"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+</RelativeLayout>

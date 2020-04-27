@@ -1,0 +1,39 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="RippleStyleGray" >
+        <item name="mrl_rippleOverlay">true</item>
+        <item name="mrl_rippleColor">#ded6d1</item>
+        <item name="mrl_rippleAlpha">0.2</item>
+    </style>
+
+    <style name="RippleStyleWhite" >
+        <item name="mrl_rippleOverlay">true</item>
+        <item name="mrl_rippleColor">#FFF</item>
+        <item name="mrl_rippleAlpha">0.2</item>
+    </style>
+
+    <style name="MaterialSearchViewStyle">
+        <item name="searchCloseIcon">@drawable/icon_cross</item>
+        <item name="searchBackIcon">@drawable/icon_back</item>
+        <item name="searchSuggestionBackground">@color/search_layover_bg</item>
+
+        <item name="android:hint">@string/search_hint</item>
+        <item name="android:inputType">textCapWords</item>
+    </style>
+
+
+</resources>

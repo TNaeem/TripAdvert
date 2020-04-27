@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarId"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/activity_chat_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/activity_chat_image"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/person_image"
+                android:layout_gravity="left"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activity_chat_person_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Person Name"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"     />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activity_chat_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarId"
+        android:layout_above="@+id/activity_chat_new_message"/>
+    
+    <RelativeLayout
+        android:id="@+id/activity_chat_new_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="#fff"
+        android:layout_alignParentBottom="true">
+        
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_chat_message_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/activity_chat_send_btn"
+            android:hint="Type a message..."
+            android:background="@color/transparent"
+            />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/activity_chat_send_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/icon_send_image"/>
+            
+        
+    </RelativeLayout>
+
+</RelativeLayout>
