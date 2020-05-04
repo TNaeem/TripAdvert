@@ -1,36 +1,59 @@
 package com.e.maintabactivity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class PrivateTripActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class PrivateTripActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "PrivateTripActivity";
     private static int ERROR_DIALOG_REQUEST = 9001;
-    Button mStartPointBtn;
-    Button mDestinationBtn;
 
-    private Button mDepartureDateBtn;
-    private Button mArrivalDateBtn;
-    private MaterialTextView mDepartureDateTextView;
-    private MaterialTextView mArrivalDateTextView;
+
+    private MaterialButton    mDepartureDateBtn;
+    private MaterialButton    mArrivalDateBtn;
+    private MaterialTextView  mDepartureDateTextView;
+    private MaterialTextView  mArrivalDateTextView;
+    private TextInputEditText    mDepartureLocation;
+    private TextInputEditText    mDestinationLocation;
+    private TextInputEditText mTripTitle;
+    private TextInputEditText mPassengersCount;
+    private TextInputEditText mBudget;
+
 
 
     @Override
@@ -38,17 +61,12 @@ public class PrivateTripActivity extends AppCompatActivity implements DatePicker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_trip);
 
-        //Date Picker
-        /*MaterialDatePicker.Builder<Long> builder =
-                MaterialDatePicker.Builder.datePicker();
-        MaterialDatePicker<Long> picker = builder.build();
-        picker.show(getSupportFragmentManager(), picker.toString());
-        */
+        bindView();
 
-        mDepartureDateBtn = findViewById(R.id.activity_private_trip_departure_date_btn);
-        mArrivalDateBtn = findViewById(R.id.activity_private_trip_arrival_date_btn);
-        mDepartureDateTextView = findViewById(R.id.activity_private_trip_departure_date_text);
-        mArrivalDateTextView = findViewById(R.id.activity_private_trip_arrival_date_text);
+
+
+
+
 
 
 
@@ -109,38 +127,18 @@ public class PrivateTripActivity extends AppCompatActivity implements DatePicker
         });
 
     }
+    public void bindView(){
+        mTripTitle = findViewById(R.id.activity_private_trip_title);
+        mPassengersCount = findViewById(R.id.activity_private_trip_passengers_count);
+        mBudget = findViewById(R.id.activity_private_trip_budget);
+        mDepartureDateBtn = findViewById(R.id.activity_private_trip_departure_date_btn);
+        mArrivalDateBtn = findViewById(R.id.activity_private_trip_arrival_date_btn);
+        mDepartureDateTextView = findViewById(R.id.activity_private_trip_departure_date_text);
+        mArrivalDateTextView = findViewById(R.id.activity_private_trip_arrival_date_text);
+        mDepartureLocation = findViewById(R.id.private_trip_activity_departure_location);
+        mDestinationLocation = findViewById(R.id.private_trip_activity_destination);
 
-
-    private void init(){
-        mStartPointBtn = findViewById(R.id.private_trip_activity_start_point_btn);
-        mStartPointBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MapActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    public boolean isServiceOK(){
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(PrivateTripActivity.this);
-
-        if(available == ConnectionResult.SUCCESS){
-            Log.d(TAG, "isServiceOK: Google play service is working");
-            return true;
-        }else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-            Log.d(TAG, "isServiceOK: an error occur but can be fixed");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(PrivateTripActivity.this,available, ERROR_DIALOG_REQUEST);
-            dialog.show();
-        }else{
-            Toast.makeText(this, "You can't make request", Toast.LENGTH_LONG).show();
-        }
-        return false;
 
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-    }
 }

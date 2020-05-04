@@ -5,12 +5,9 @@
     <string name="title_notifications">Notifications</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_orgaizer_profile_tab">OrgaizerProfileTabActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
 
-    <string name="google_maps_api_key">AIzaSyBwr_gGF1ed5o6XW8ldsTZt7kO2pqyvCds</string>
+
+    <string name="google_maps_api_key">AIzaSyBUSoO0n3dFfvEbjTrCh6jSoMB-ThWGYvk</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

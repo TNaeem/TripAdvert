@@ -1,4 +1,4 @@
-package com.e.tripadvet.Organizer.fragments;
+package com.e.maintabactivity.organizer.fragments;
 
 import android.os.Bundle;
 
@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.e.tripadvet.Organizer.adapters.OrganizerProfileGalleryAdapter;
+import com.e.maintabactivity.organizer.adapters.OrganizerProfileGalleryAdapter;
 import com.e.maintabactivity.R;
 
 /**

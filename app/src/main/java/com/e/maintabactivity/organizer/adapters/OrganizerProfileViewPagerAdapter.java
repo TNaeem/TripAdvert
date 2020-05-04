@@ -6,9 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-
-import com.e.tripadvet.Organizer.fragments.OrganizerProfileAboutFragment;
-import com.e.tripadvet.Organizer.fragments.OrganizerProfileGalleryFragment;
+import com.e.maintabactivity.organizer.fragments.OrganizerProfileAboutFragment;
+import com.e.maintabactivity.organizer.fragments.OrganizerProfileGalleryFragment;
 import com.e.maintabactivity.organizer.fragments.OrganizerProfileTripsFragment;
 
 public class OrganizerProfileViewPagerAdapter extends FragmentPagerAdapter {

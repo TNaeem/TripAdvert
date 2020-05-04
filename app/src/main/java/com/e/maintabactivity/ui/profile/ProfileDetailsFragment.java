@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.e.maintabactivity.R;
-import com.e.maintabactivity.SignupActivity;
+import com.e.maintabactivity.SignUpActivity;
 import com.google.android.material.button.MaterialButton;
 
 /**
@@ -73,7 +73,7 @@ public class ProfileDetailsFragment extends Fragment {
         mEditProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, SignupActivity.class);
+                Intent intent = new Intent(mContext, SignUpActivity.class);
                 startActivity(intent);
             }
         });

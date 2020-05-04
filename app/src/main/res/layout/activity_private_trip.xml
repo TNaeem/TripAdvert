@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PrivateTrip"
     android:orientation="vertical"
 
     >
@@ -54,7 +53,7 @@
                 app:helperText="Required">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_add_branch_name"
+                    android:id="@+id/activity_private_trip_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -87,7 +86,7 @@
             android:tint="@color/colorPrimary" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/activity_add_branch_passengers"
+            android:id="@+id/activity_private_trip_passengers"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,7 +94,7 @@
             app:helperText="Required">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_add_branch_passengers_count"
+                android:id="@+id/activity_private_trip_passengers_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
@@ -128,7 +127,7 @@
             android:tint="@color/colorPrimary" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/activity_add_branch_budget"
+            android:id="@+id/activity_private_trip_budget_"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,7 +135,7 @@
             app:helperText="Required">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_add_branch_budget_price"
+                android:id="@+id/activity_private_trip_budget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
@@ -241,16 +240,18 @@
         android:layout_marginLeft="8dp"
         />
     </LinearLayout>
+
+
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
         >
 
         <ImageView
@@ -260,25 +261,38 @@
             android:src="@drawable/icon_home"
             android:tint="@color/colorPrimary" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/private_trip_activity_start_point_btn"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_private_trip_departure"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Departure Location"
-            app:textAllCaps="false"
-            />
+            android:layout_height="wrap_content"
+            android:hint="Departure Location"
+            app:helperText="Required">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/private_trip_activity_departure_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
 
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
         >
 
         <ImageView
@@ -288,15 +302,47 @@
             android:src="@drawable/icon_home"
             android:tint="@color/colorPrimary" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/private_trip_activity_destination_point_btn"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_private_trip_destination"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Destination"
-            app:textAllCaps="false"
-            />
+            android:layout_height="wrap_content"
+            android:hint="Destination Location"
+            app:helperText="Required">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/private_trip_activity_destination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/activity_private_trip_submit_btn"
+            android:layout_marginLeft="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Submit"/>
+
+    </LinearLayout>
+
+
 
 
 

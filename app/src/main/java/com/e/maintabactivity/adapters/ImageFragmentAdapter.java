@@ -1,4 +1,4 @@
-package com.e.tripadvet.adapters;
+package com.e.maintabactivity.adapters;
 
 import android.os.Bundle;
 

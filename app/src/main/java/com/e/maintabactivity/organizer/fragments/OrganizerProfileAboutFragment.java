@@ -1,4 +1,4 @@
-package com.e.tripadvet.Organizer.fragments;
+package com.e.maintabactivity.organizer.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

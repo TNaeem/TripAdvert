@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.e.tripadvet.adapters.ImageFragmentAdapter;
+import com.e.maintabactivity.adapters.ImageFragmentAdapter;
 
 
 public class Slider extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.e.tripadvet.Organizer.adapters;
+package com.e.maintabactivity.organizer.adapters;
 
 
 import android.content.Context;
