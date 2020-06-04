@@ -8,4 +8,8 @@
     <color name="colorBlack">#000000</color>
     <color name="gray">#7E7A7A</color>
     <color name="lightGray">#E3E3E3</color>
+    <color name="greenColor">#39fc23</color>
+    <color name="redColor">#ff0000</color>
+    <color name="fbBtnColor">#4267b2</color>
+
 </resources>

@@ -39,6 +39,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:28.0.0'
+
 
     // CardView
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -57,9 +62,25 @@ dependencies {
     implementation "com.google.android.gms:play-services-places:17.0.0"
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.libraries.places:places:2.2.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
 
     // Circle Image View - Profile
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    //Google Auth
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
+    //FB
+    implementation 'com.facebook.android:facebook-login:[5,6)'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //API
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
 
 }

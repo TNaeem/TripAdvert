@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/layout_user_booking_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contentPadding="10dp"
+        app:cardCornerRadius="5dp"
+        android:layout_margin="10dp"
+        app:cardElevation="5dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trip Title:"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/layout_user_booking_trip_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Some title of the Trip"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:layout_marginTop="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Total Payment:"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/layout_user_booking_trip_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1000 Rs"
+                        android:textColor="@color/greenColor"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Date:"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/layout_user_booking_trip_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="5/22/2020"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/layout_user_booking_trip_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pending Approval ..."
+                android:textColor="@color/redColor"
+
+                android:textSize="20sp"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+    
+    
+</RelativeLayout>

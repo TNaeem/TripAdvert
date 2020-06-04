@@ -2,63 +2,57 @@ package com.e.maintabactivity.organizer.adapters;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import com.squareup.picasso.Picasso;
 
-import com.e.maintabactivity.R;
-import com.e.maintabactivity.Slider;
+import java.util.List;
 
-public class OrganizerProfileGalleryAdapter extends RecyclerView.Adapter<OrganizerProfileGalleryAdapter.OrganizerProfileGalleryAdapterViewHolder> {
-    private int[] trips;
-    private Context context;
-    public OrganizerProfileGalleryAdapter(Context context, int [] trips){
-        this.context = context;
-        this.trips = trips;
-    }
-    @NonNull
-    @Override
 
-    public OrganizerProfileGalleryAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.grid_image_item, parent, false);
-        return new OrganizerProfileGalleryAdapterViewHolder(view);
+public class OrganizerProfileGalleryAdapter extends BaseAdapter {
+
+    List<String> mImagesIds;
+    Context mContext;
+
+    public OrganizerProfileGalleryAdapter(List<String> ids, Context context){
+        mImagesIds = ids;
+        mContext = context;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrganizerProfileGalleryAdapter.OrganizerProfileGalleryAdapterViewHolder holder, final int position) {
-
-        holder.tripImage.setImageResource(trips[position]);
-        holder.tripImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, Slider.class);
-                intent.putExtra("POSITION", position);
-                context.startActivity(intent);
-
-            }
-        });
+    public int getCount() {
+        return mImagesIds.size();
     }
 
     @Override
-    public int getItemCount() {
-        return trips.length;
+    public Object getItem(int position) {
+        return null;
     }
 
-    public class OrganizerProfileGalleryAdapterViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
 
-        ImageView tripImage;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-        public OrganizerProfileGalleryAdapterViewHolder(View itemView){
-            super(itemView);
-            tripImage = itemView.findViewById(R.id.grid_image_item);
+        ImageView imageView = (ImageView) convertView;
 
+        if(imageView == null){
+            imageView = new ImageView(mContext);
+            imageView.setLayoutParams(new GridView.LayoutParams(350, 450));
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         }
+
+        Picasso.get().load(mImagesIds.get(position)).into(imageView);
+
+        return imageView;
     }
 }
 

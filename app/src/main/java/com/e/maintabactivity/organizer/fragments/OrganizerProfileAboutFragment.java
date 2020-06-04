@@ -9,9 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.e.maintabactivity.PrivateTripActivity;
 import com.e.maintabactivity.R;
+import com.e.maintabactivity.models.OrganizerModel;
+import com.e.maintabactivity.models.PersonModel;
+import com.google.android.material.textview.MaterialTextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,14 +27,23 @@ public class OrganizerProfileAboutFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static PersonModel personModel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private Button mChatBtn;
     private Button mPrivateEventBtn;
+    private MaterialTextView mEmail;
+    private MaterialTextView mCompanyName;
+    private MaterialTextView mContact;
+    private MaterialTextView mAddress;
+    private ImageView mIsVerified;
 
-    public OrganizerProfileAboutFragment() {
+
+    public OrganizerProfileAboutFragment(PersonModel personModel) {
+         this.personModel = personModel;
+
         // Required empty public constructor
     }
 
@@ -44,7 +57,8 @@ public class OrganizerProfileAboutFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static OrganizerProfileAboutFragment newInstance(String param1, String param2) {
-        OrganizerProfileAboutFragment fragment = new OrganizerProfileAboutFragment();
+
+        OrganizerProfileAboutFragment fragment = new OrganizerProfileAboutFragment(personModel);
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,6 +79,18 @@ public class OrganizerProfileAboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_organizer_profile_about, container, false);
+
+        mCompanyName = view.findViewById(R.id.fragment_organizer_profile_about_org);
+        mCompanyName.setText(personModel.getOrganizer().getOrganization());
+        mAddress = view.findViewById(R.id.fragment_organizer_profile_about_address);
+        mAddress.setText(personModel.getOrganizer().getAddress());
+        mContact = view.findViewById(R.id.fragment_organizer_profile_about_contact);
+        mContact.setText(personModel.getPhone_no());
+        mEmail = view.findViewById(R.id.fragment_organizer_profile_about_emial);
+        mEmail.setText(personModel.getEmail());
+        mIsVerified = view.findViewById(R.id.layout_organizer_card_isVerified);
+
+
         mPrivateEventBtn = view.findViewById(R.id.fragment_organizer_profile_about_btn_private_event);
         mPrivateEventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +100,6 @@ public class OrganizerProfileAboutFragment extends Fragment {
             }
         });
 
-
-        // Inflate the layout for this fragment
         return view;
     }
 }

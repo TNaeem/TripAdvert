@@ -13,15 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.TripDetailsActivity;
+import com.e.maintabactivity.models.EventModel;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class OrganizerProfileTripsAdapter extends RecyclerView.Adapter<OrganizerProfileTripsAdapter.OrganizerProfileTripsAdapterViewHolder> {
-    private String[] organizers;
+    private List<EventModel> eventModelList;
     private Context context;
-    public OrganizerProfileTripsAdapter(Context context, String [] organizers){
+    public OrganizerProfileTripsAdapter(Context context, List<EventModel> eventModelList){
         this.context = context;
-        this.organizers = organizers;
+        this.eventModelList = eventModelList;
+
     }
     @NonNull
     @Override
@@ -34,12 +40,20 @@ public class OrganizerProfileTripsAdapter extends RecyclerView.Adapter<Organizer
 
     @Override
     public void onBindViewHolder(@NonNull OrganizerProfileTripsAdapter.OrganizerProfileTripsAdapterViewHolder holder, int position) {
-        String title = organizers[position];
-        holder.tripTitle.setText(title);
+        final EventModel eventModel = eventModelList.get(position);
+
+        holder.tripTitle.setText(eventModel.getTitle());
+        holder.destination.setText(eventModel.getDestination());
+        holder.description.setText(eventModel.getDescription());
+
+        Picasso.get().load(eventModel.getPic()).into(holder.tripImage);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(v.getContext(), TripDetailsActivity.class));
+                Intent intent = new Intent(v.getContext(), TripDetailsActivity.class);
+                Gson gson = new Gson();
+                intent.putExtra("trip", gson.toJson(eventModel));
+                context.startActivity(intent);
             }
         });
 
@@ -49,7 +63,7 @@ public class OrganizerProfileTripsAdapter extends RecyclerView.Adapter<Organizer
 
     @Override
     public int getItemCount() {
-        return organizers.length;
+        return eventModelList.size();
     }
 
     public class OrganizerProfileTripsAdapterViewHolder extends RecyclerView.ViewHolder{
@@ -62,7 +76,7 @@ public class OrganizerProfileTripsAdapter extends RecyclerView.Adapter<Organizer
 
             super(itemView);
             cardView = itemView.findViewById(R.id.layout_profile_trip_item_card_view);
-            tripTitle = (MaterialTextView)itemView.findViewById(R.id.layout_profile_trip_title);
+            tripTitle = itemView.findViewById(R.id.layout_profile_trip_title);
             destination = itemView.findViewById(R.id.layout_profile_trip_destination);
             description = itemView.findViewById(R.id.layout_profile_trip_description);
             tripImage = itemView.findViewById(R.id.layout_profile_trip_item_trip_image);

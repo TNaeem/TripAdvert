@@ -7,12 +7,11 @@
     tools:context=".LoginActivity">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="420dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -46,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:inputType="textPersonName"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/black"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -80,9 +80,9 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
+            android:paddingVertical="10dp"
             android:text="sign in"
             android:textSize="16sp"
-            android:paddingVertical="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout_password" />
@@ -90,28 +90,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:orientation="horizontal"
-            android:gravity="right"
             android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="right"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="40dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            >
+            app:layout_constraintStart_toStartOf="parent">
+
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="New User?   "
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/activity_login_sign_up_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:clickable="true"
                 android:text="SignUp"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
                 android:textSize="16sp"
-                android:clickable="true"/>
+                android:textStyle="bold" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -121,7 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="50dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:layout_marginTop="8dp"
@@ -153,29 +154,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal">
-            <de.hdodenhof.circleimageview.CircleImageView
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+
+            <Button
                 android:id="@+id/activity_login_fb_btn"
-                android:layout_height="match_parent"
-                android:layout_width="60dp"
-                android:src="@drawable/fb_logo"
-                android:scaleType="centerCrop"
-                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continue With Facebook"
+                android:drawableLeft="@drawable/fb_logo"
+                android:background="@color/fbBtnColor"
                 />
-            <de.hdodenhof.circleimageview.CircleImageView
+
+            <com.google.android.gms.common.SignInButton
                 android:id="@+id/activity_login_google_btn"
-                android:layout_height="match_parent"
-                android:layout_width="60dp"
-                android:src="@drawable/google_logo"
-                android:scaleType="centerCrop"
-                android:layout_marginLeft="20dp"
-                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Continue With Google"
+                android:layout_marginTop="5dp"
+
                 />
+
         </LinearLayout>
 
 
     </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".organizer.fragments.OrganizerProfileGalleryFragment">
+    tools:context=".organizer.fragments.OrganizerProfileGalleryFragment"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/fragment_organizer_profile_gallery_recycler_view"
+   <GridView
+       android:id="@+id/fragment_organizer_profile_gallery_gridView"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:scrollbars="vertical"/>
+       android:numColumns="auto_fit"
+       android:verticalSpacing="2dp"
+       android:horizontalSpacing="2dp"
+       android:columnWidth="120dp"
+       android:layout_marginTop="5dp"
+       
+      />
 
-</FrameLayout>
+</LinearLayout>

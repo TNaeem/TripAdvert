@@ -11,13 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.TripDetailsActivity;
+import com.e.maintabactivity.apiServises.EventsApiInterface;
+import com.e.maintabactivity.models.EventModel;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class ProfileTripsAdapter extends RecyclerView.Adapter<ProfileTripsAdapter.ProfileTripsAdapterViewHolder> {
-    private String[] trips;
+    private List<EventModel> trips;
     private Context context;
-    public ProfileTripsAdapter(Context context, String [] trips){
+    public ProfileTripsAdapter(Context context, List<EventModel> trips){
         this.context = context;
         this.trips = trips;
     }
@@ -32,14 +37,13 @@ public class ProfileTripsAdapter extends RecyclerView.Adapter<ProfileTripsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ProfileTripsAdapter.ProfileTripsAdapterViewHolder holder, int position) {
-        String title = trips[position];
-        holder.tripTitle.setText(title);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(v.getContext(), TripDetailsActivity.class));
-            }
-        });
+        EventModel eventModel = trips.get(position);
+        holder.tripTitle.setText(eventModel.getTitle());
+        holder.description.setText(eventModel.getDestination());
+        Picasso.get().load(eventModel.getPic()).into(holder.tripImage);
+        holder.description.setText(eventModel.getDescription());
+
+
 
 
 
@@ -47,7 +51,7 @@ public class ProfileTripsAdapter extends RecyclerView.Adapter<ProfileTripsAdapte
 
     @Override
     public int getItemCount() {
-        return trips.length;
+        return trips.size();
     }
 
     public class ProfileTripsAdapterViewHolder extends RecyclerView.ViewHolder{

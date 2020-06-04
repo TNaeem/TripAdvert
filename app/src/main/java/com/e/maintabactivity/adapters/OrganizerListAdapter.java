@@ -2,6 +2,8 @@ package com.e.maintabactivity.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.organizer.OrganizerProfileActivity;
 import com.e.maintabactivity.R;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 public class OrganizerListAdapter extends RecyclerView.Adapter<OrganizerListAdapter.OrganizerListAdapterViewHolder> {
-    private String[] organizers;
+    private List<PersonModel> organizers;
     private Context context;
-    public OrganizerListAdapter(Context context, String [] trips){
+    public OrganizerListAdapter(Context context, List<PersonModel> organizers){
         this.context = context;
-        this.organizers = trips;
+        this.organizers = organizers;
     }
     @NonNull
     @Override
@@ -34,20 +40,23 @@ public class OrganizerListAdapter extends RecyclerView.Adapter<OrganizerListAdap
 
     @Override
     public void onBindViewHolder(@NonNull OrganizerListAdapter.OrganizerListAdapterViewHolder holder, int position) {
-        String title = organizers[position];
-        holder.name.setText(title);
+        final PersonModel organizer = organizers.get(position);
+        holder.name.setText(organizer.getFirst_name() + " " + organizer.getLast_name());
         holder.ratings.setRating(3.5f);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(v.getContext(), OrganizerProfileActivity.class));
+                Intent intent = new Intent(v.getContext(), OrganizerProfileActivity.class);
+                Gson gson = new Gson();
+                intent.putExtra("organizer", gson.toJson(organizer));
+                context.startActivity(intent);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return organizers.length;
+        return organizers.size();
     }
 
     public class OrganizerListAdapterViewHolder extends RecyclerView.ViewHolder{

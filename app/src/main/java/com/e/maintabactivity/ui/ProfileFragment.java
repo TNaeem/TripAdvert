@@ -15,8 +15,13 @@ import android.view.ViewGroup;
 
 import com.e.maintabactivity.R;
 
+import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.ui.profile.ProfileViewPagerAdapter;
+import com.e.maintabactivity.utility.UserSharedPreference;
 import com.google.android.material.tabs.TabLayout;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +41,7 @@ public class ProfileFragment extends Fragment {
     private ViewPager mViewPager;
     private ProfileViewPagerAdapter mViewPagerAdapter;
     private Context mContext;
+    private CircleImageView mProfileImage;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -74,7 +80,17 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view         = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        //Uploading Profile Image
+        mProfileImage = view.findViewById(R.id.fragment_profile_image);
+        PersonModel personModel = UserSharedPreference.getUser(getContext());
+        if(personModel != null){
+            Picasso.get().load(personModel.getImage()).into(mProfileImage);
+        }else{
+            Picasso.get().load(R.drawable.icon_sample_profile).into(mProfileImage);
+        }
+
 
         mTabLayout        = view.findViewById(R.id.fragment_profile_tab_layout);
         mViewPager        = view.findViewById(R.id.fragment_profile_view_pager);

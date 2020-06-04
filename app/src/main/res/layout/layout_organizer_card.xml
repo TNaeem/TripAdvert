@@ -73,11 +73,13 @@
                         android:isIndicator="true"
                         />
                     <ImageView
+                        android:id="@+id/layout_organizer_card_isVerified"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:src="@drawable/verified"
                         android:layout_alignParentRight="true"
                         android:scaleType="centerCrop"
+
                         />
                 </RelativeLayout>
                 <RelativeLayout

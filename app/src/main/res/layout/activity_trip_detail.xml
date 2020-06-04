@@ -1,126 +1,422 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TripDetailsActivity">
-    <androidx.cardview.widget.CardView
-        android:id="@+id/main_card_view"
+    tools:context=".TripDetailsActivity"
+    android:layout_marginBottom="20dp">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarId"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:layout_marginBottom="10dp"
-        app:cardElevation="10dp"
-        tools:ignore="MissingConstraints">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="@color/colorWhite"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleTextAppearance="@color/transparent"
+            android:fitsSystemWindows="true">
+            <ImageView
+                android:id="@+id/activity_trip_detail_image"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/app_name"
+                app:layout_collapseMode="parallax"
+                android:src="@drawable/trip_location"/>
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="Some Title"
+                app:layout_collapseMode="pin"
+                android:id="@+id/activity_trip_detail_trip_title"
+                android:layout_gravity="bottom"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingRight="10dp"
+                android:layout_marginTop="10dp"
+                />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <include layout="@layout/organizer_layout"
+
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
+
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.textview.MaterialTextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Details"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
+                    android:layout_weight="1"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/activity_trip_detail_book_now_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Book Now"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activity_trip_detail_trip_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:maxLines="20"
+                android:textSize="16sp"
+                android:paddingVertical="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginTop="5dp"
+                >
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total slots :"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
+                    android:layout_weight="1"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/activity_trip_detail_trip_total_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginTop="5dp"
+                >
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Available slots :"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
+                    android:layout_weight="1"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/activity_trip_detail_trip_available_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:text="Trip Images"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <GridView
+                android:id="@+id/activity_trip_details_images_gridView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:numColumns="3"
+                android:horizontalSpacing="2dp"
+                android:verticalSpacing="2dp"/>
+
+            <View
+                android:layout_marginVertical="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"
+                android:layout_marginHorizontal="20dp"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Services Available"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:layout_marginTop="5dp">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_accommodation"/>
+                <com.google.android.material.textview.MaterialTextView
+
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:textSize="15sp"
+                    android:paddingVertical="5dp"
+                    android:text="Accommodation"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/colorBlack"
+                    />
+                <ImageView
+                    android:id="@+id/accommodation_check"
+                    android:layout_weight="1"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_check"
+                    android:tint="@color/greenColor"
+                    />
+            </LinearLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/accommodation_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:maxLines="20"
+                android:layout_marginTop="5dp"
+                android:paddingVertical="5dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:layout_marginTop="5dp">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_sightseeing"/>
+                <com.google.android.material.textview.MaterialTextView
+
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:textSize="16sp"
+                    android:paddingVertical="5dp"
+                    android:text="Sight Seeing"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/colorBlack"
+                    />
+                <ImageView
+                    android:id="@+id/sight_seeing_check"
+                    android:layout_weight="1"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_check"
+                    android:tint="@color/greenColor"/>
+            </LinearLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/sight_seeing_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:maxLines="20"
+                android:layout_marginTop="5dp"
+                android:paddingVertical="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:layout_marginTop="5dp">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/icon_food"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:textSize="16sp"
+                    android:paddingVertical="5dp"
+                    android:text="Food"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/colorBlack"
+                    />
+                <ImageView
+                    android:id="@+id/food_check"
+                    android:layout_weight="1"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_check"
+                    android:tint="@color/greenColor"/>
+            </LinearLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/food_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:maxLines="20"
+                android:layout_marginTop="5dp"
+                android:paddingVertical="5dp"/>
+
+            <View
+                android:layout_marginVertical="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"
+                android:layout_marginHorizontal="20dp"/>
+
+            //Schedule
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Schedule"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"/>
 
             <RelativeLayout
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:id="@+id/activity_trip_detail_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="275dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/trip_location"
-                    android:transitionName="single_trip_logo"/>
+                android:layout_height="wrap_content"
 
-                <ImageView
-                    android:id="@+id/activity_trip_details_back_btn"
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/icon_back"
-                    android:clickable="true"/>
-                <TextView
-                    android:id="@+id/trip_title"
+                >
+            <ImageView
+                android:id="@+id/departure_logo"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:src="@drawable/destination"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:alpha="0.8"
-                    android:paddingTop="10dp"
-                    android:text="Title of trip"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="10dp"
-                    android:layout_alignBottom="@+id/activity_trip_detail_image"/>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@+id/departure_logo">
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Departure Location:"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="17sp"
+                    android:padding="1dp"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/home_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="Lahore, Anarkali Bazar"
+                    android:padding="1dp"/>
+                <com.google.android.material.textview.MaterialTextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Departure Date:"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="17sp"
+                    android:padding="1dp"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/departure_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="10 June 2020"
+                    android:padding="1dp"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+                <ImageView
+                    android:id="@+id/destination_logo"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/destination"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@+id/destination_logo">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Destination Location"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="17sp"
+                        android:padding="1dp"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/destination_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Murree "
+                        android:padding="1dp"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Departure Date:"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="17sp"
+                        android:padding="1dp"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/homeBack_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="10 June 2020"
+                        android:padding="1dp"/>
+
+                </LinearLayout>
             </RelativeLayout>
 
 
-            <include layout="@layout/organizer_layout" />
+
+
+
+
+
+
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/main_card_view">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.alespero.expandablecardview.ExpandableCardView
-                android:id="@+id/profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:title="Passengers"
-                app:icon="@drawable/icon_location"
-                app:inner_view="@layout/layout_trip_details_detail"
-                app:expandOnClick="true"
-                app:animationDuration="300"
-                app:startExpanded="false"/>
-
-            <com.alespero.expandablecardview.ExpandableCardView
-                android:id="@+id/activity_trip_details"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:title="Details"
-                app:icon="@drawable/details"
-                app:inner_view="@layout/layout_trip_details_detail"
-                app:expandOnClick="true"/>
-            <com.alespero.expandablecardview.ExpandableCardView
-                android:id="@+id/activity_trip_schedule"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:title="Schedule"
-                app:icon="@drawable/schedule"
-                app:inner_view="@layout/layout_trip_details_detail"
-                app:expandOnClick="true"/>
-            <com.alespero.expandablecardview.ExpandableCardView
-                android:id="@+id/activity_trip_comments"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:title="Comments"
-                app:icon="@drawable/comment"
-                app:inner_view="@layout/layout_trip_details_detail"
-                app:expandOnClick="true"
-                />
-        </LinearLayout>
-
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 
 
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

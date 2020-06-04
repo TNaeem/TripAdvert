@@ -32,6 +32,7 @@
                     />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activity_organizer_profile_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -42,7 +43,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_below="@+id/activity_organizer_profile_image"/>
             <RatingBar
-                android:id="@+id/single_trip_organizer_ratting"
+                android:id="@+id/activity_organizer_profile_rating"
                 android:layout_below="@+id/single_trip_organizer_name"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"

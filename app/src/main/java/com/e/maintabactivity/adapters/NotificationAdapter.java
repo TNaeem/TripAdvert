@@ -2,6 +2,7 @@ package com.e.maintabactivity.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("TAG", "onClick: " + "CardViewClicked");
                 context.startActivity(new Intent(v.getContext(), TripDetailsActivity.class));
             }
         });

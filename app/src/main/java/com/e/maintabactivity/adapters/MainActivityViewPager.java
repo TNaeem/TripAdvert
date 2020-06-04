@@ -12,6 +12,13 @@ import com.e.maintabactivity.ui.*;
 public class MainActivityViewPager extends FragmentPagerAdapter {
 
     private final Context context;
+    HomeFragment homeFragment = new HomeFragment();
+    OrganizerListFragment organizerListFragment = new OrganizerListFragment();
+    BookingsFragment bookingsFragment = new BookingsFragment();
+    ChatFragment chatFragment = new ChatFragment();
+    NotificationFragment notificationFragment = new NotificationFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
+
     public MainActivityViewPager(Context context, FragmentManager fragmentManager){
         super(fragmentManager);
         this.context = context;
@@ -21,19 +28,19 @@ public class MainActivityViewPager extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position == 0){
-            return new HomeFragment();
+            return homeFragment;
         }else if(position == 1){
-            return new OrganizerListFragment();
+            return organizerListFragment;
         }else if(position == 2){
-            return new BookingsFragment();
+            return bookingsFragment;
         }else if(position == 3){
-            return new ChatFragment();
+            return chatFragment;
         }else if(position == 4){
-            return new ProfileFragment();
+            return profileFragment;
         }else if(position == 5){
-            return new NotificationFragment();
+            return notificationFragment;
         }
-        return new HomeFragment();
+        return homeFragment;
     }
 
     @Override

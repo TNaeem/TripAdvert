@@ -12,7 +12,13 @@ import android.view.ViewGroup;
 
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.SignUpActivity;
+import com.e.maintabactivity.UpdateProfileActivity;
+import com.e.maintabactivity.models.PersonModel;
+import com.e.maintabactivity.utility.UserSharedPreference;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,21 +36,19 @@ public class ProfileDetailsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private MaterialButton mEditProfileBtn;
+    private MaterialTextView mEmail;
+    private MaterialTextView mName;
+    private MaterialTextView mAddress;
+    private MaterialTextView mContact;
+
+
 
     public ProfileDetailsFragment() {
-        mContext = getContext();
+
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ProfileDetailsFragment newInstance(String param1, String param2) {
         ProfileDetailsFragment fragment = new ProfileDetailsFragment();
         Bundle args = new Bundle();
@@ -68,16 +72,34 @@ public class ProfileDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_profile_details_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile_details, container, false);
+
+        PersonModel personModel = UserSharedPreference.getUser(getContext());
+
+
+
+        mEmail = view.findViewById(R.id.fragment_profile_details_email);
+        mName = view.findViewById(R.id.fragment_profile_detail_name);
+        mAddress = view.findViewById(R.id.fragment_profile_details_address);
+        mContact = view.findViewById(R.id.fragment_profile_details_contact);
         mEditProfileBtn = view.findViewById(R.id.fragment_profile_details_edit_profile);
         mEditProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, SignUpActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getActivity(), UpdateProfileActivity.class);
+                getActivity().startActivity(intent);
             }
         });
 
+        if(personModel != null){
+            mEmail.setText(personModel.getEmail());
+            mName.setText(personModel.getFirst_name() + " " + personModel.getLast_name());
+            mAddress.setText(personModel.getUser().getAddress());
+            mContact.setText(personModel.getPhone_no());
+        }
+
         return view;
     }
+
+
 }

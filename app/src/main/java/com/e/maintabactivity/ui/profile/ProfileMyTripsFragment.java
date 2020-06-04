@@ -6,44 +6,45 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.adapters.ProfileTripsAdapter;
+import com.e.maintabactivity.apiServises.EventsApiInterface;
+import com.e.maintabactivity.apiServises.RetrofitInstance;
+import com.e.maintabactivity.apiServises.UserApiInterface;
+import com.e.maintabactivity.models.EventModel;
+import com.e.maintabactivity.organizer.adapters.OrganizerProfileTripsAdapter;
+import com.e.maintabactivity.utility.UserSharedPreference;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileMyTripsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ProfileMyTripsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "ProfileMyTripsFragment";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
     private RecyclerView recyclerView;
-    private String[] trips = {"Title 1", "Title 2", "Title 3"} ;
+    private EventsApiInterface mEventsApiInterface;
+
 
     public ProfileMyTripsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileMyTripsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ProfileMyTripsFragment newInstance(String param1, String param2) {
         ProfileMyTripsFragment fragment = new ProfileMyTripsFragment();
         Bundle args = new Bundle();
@@ -66,11 +67,32 @@ public class ProfileMyTripsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mEventsApiInterface = RetrofitInstance.getRetrofitInstance().create(EventsApiInterface.class);
+        int userId = UserSharedPreference.getUser(getContext()).getId();
+        getTripsByOrganizerId(userId);
+
         View view = inflater.inflate(R.layout.fragment_profile_my_trips, container, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false);
         recyclerView = view.findViewById(R.id.fragment_profile_my_trips_recycler_view);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new ProfileTripsAdapter(getContext(), trips));
+
         return view;
+    }
+
+    private void getTripsByOrganizerId(int userId){
+        mEventsApiInterface.getPortfolioEventsByUserId(userId).enqueue(new Callback<List<EventModel>>() {
+            @Override
+            public void onResponse(Call<List<EventModel>> call, Response<List<EventModel>> response) {
+                if(response.body() != null){
+                    List<EventModel> events = response.body();
+                    recyclerView.setAdapter(new ProfileTripsAdapter(getContext(), events));
+                }
+                Log.d(TAG, "onResponse: " + response);
+            }
+            @Override
+            public void onFailure(Call<List<EventModel>> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
     }
 }
