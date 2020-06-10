@@ -18,6 +18,7 @@ import com.e.maintabactivity.adapters.OrganizerListAdapter;
 import com.e.maintabactivity.apiServises.OrganizerApiInterface;
 import com.e.maintabactivity.apiServises.RetrofitInstance;
 import com.e.maintabactivity.models.PersonModel;
+import com.e.maintabactivity.staticModels.StaticOrganizerModel;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
@@ -41,7 +42,6 @@ public class OrganizerListFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
     OrganizerApiInterface mOrganizerApiInterface;
-    List<PersonModel> organizersList;
 
     public OrganizerListFragment() {
         // Required empty public constructor
@@ -73,14 +73,18 @@ public class OrganizerListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_organizer_list, container, false);
 
         mOrganizerApiInterface = RetrofitInstance.getRetrofitInstance().create(OrganizerApiInterface.class);
-        getAllOrganizers();
-        Log.d(TAG, "onCreateView: " + organizersList);
+
 
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView = view.findViewById(R.id.fragment_organizer_list_resyclerView);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        if(StaticOrganizerModel.allOrganizers == null){
+            getAllOrganizers();
+        }else {
+            mRecyclerView.setAdapter(new OrganizerListAdapter(getContext(), StaticOrganizerModel.allOrganizers));
+        }
 
         //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         return view;
@@ -92,8 +96,8 @@ public class OrganizerListFragment extends Fragment {
             @Override
             public void onResponse(Call<List<PersonModel>> call, Response<List<PersonModel>> response) {
                 if(response.body() != null){
-                    organizersList = response.body();
-                    mRecyclerView.setAdapter(new OrganizerListAdapter(getContext(), organizersList));
+                    StaticOrganizerModel.allOrganizers = response.body();
+                    mRecyclerView.setAdapter(new OrganizerListAdapter(getContext(), StaticOrganizerModel.allOrganizers));
                 }
 
                 Log.d(TAG, "onResponse: " + response);

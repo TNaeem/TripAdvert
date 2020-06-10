@@ -34,7 +34,7 @@ public class OrganizerProfileTripsAdapter extends RecyclerView.Adapter<Organizer
 
     public OrganizerProfileTripsAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.layout_profile_trip_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.layout_orgnizer_profile_trip_item, parent, false);
         return new OrganizerProfileTripsAdapterViewHolder(view);
     }
 

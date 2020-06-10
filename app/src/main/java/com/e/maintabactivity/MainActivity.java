@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -61,16 +62,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                //MaterialSearchView searchView = findViewById(R.id.search_view);
-                //searchView.setVisibility(View.GONE);
-
-
-                menu.getItem(1).setVisible(false);
+                //menu.getItem(1).setVisible(false);
 
                 int index = tabLayout.getSelectedTabPosition();
-                searchableFragment = (SearchableFragment) viewPagerAdapter.getItem(index);
+                Fragment fragment = viewPagerAdapter.getItem(index);
 
-                if(searchableFragment != null){
+                if(fragment instanceof SearchableFragment){
                     menu.getItem(1).setVisible(true);
                 }
 
@@ -100,24 +97,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_logout:
-
-                UserSharedPreference.removeUser(MainActivity.this);
-                Log.d("TAG", " User after logout " + UserSharedPreference.getUser(MainActivity.this));
-
-                LoginManager.getInstance().logOut();
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
-
-                GoogleSignInClient googleSignInClient  = GoogleSignIn.getClient(this, gso);
-                googleSignInClient.signOut();
-
-
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-
-                
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

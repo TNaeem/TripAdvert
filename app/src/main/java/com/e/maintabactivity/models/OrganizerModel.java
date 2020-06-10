@@ -23,17 +23,17 @@ public class OrganizerModel {
     boolean is_verified;
 
     @SerializedName("rating")
-    int rating;
+    float rating;
 
     public int getId() {
         return id;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

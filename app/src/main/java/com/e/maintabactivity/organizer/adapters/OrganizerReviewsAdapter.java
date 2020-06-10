@@ -14,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.TripDetailsActivity;
+import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.models.ReviewModel;
+import com.e.maintabactivity.staticModels.StaticUserModel;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,9 +29,10 @@ public class OrganizerReviewsAdapter extends RecyclerView.Adapter<OrganizerRevie
     private List<ReviewModel> reviews;
     private Context context;
     int organizerId;
-    public OrganizerReviewsAdapter(Context context, List<ReviewModel> reviews){
+    public OrganizerReviewsAdapter(Context context, List<ReviewModel> reviews, int organizerId){
         this.context = context;
         this.reviews = reviews;
+        this.organizerId = organizerId;
 
     }
     @NonNull
@@ -44,10 +48,17 @@ public class OrganizerReviewsAdapter extends RecyclerView.Adapter<OrganizerRevie
     public void onBindViewHolder(@NonNull OrganizerReviewsAdapterViewHolder holder, int position) {
         final ReviewModel reviewModel = reviews.get(position);
 
-        //holder.name.setText(reviewModel.get);
-        //holder.destination.setText(eventModel.getDestination());
-        //holder.description.setText(eventModel.getDescription());
+        holder.ratingBar.setRating(reviewModel.getRating());
+        holder.date.setText(reviewModel.getDate());
+        holder.message.setText(reviewModel.getMessage());
+        holder.date.setText(reviewModel.getDate());
+        PersonModel user = StaticUserModel.getUser(reviewModel.getUser());
+        Picasso.get().load(user.getImage()).into(holder.image);
+        holder.name.setText(user.getFirst_name() + " " + user.getLast_name());
 
+
+        // First You have to get User
+        //holder.name.setText(reviewModel.getUser());
         //Picasso.get().load(eventModel.getPic()).into(holder.tripImage);
 
     }
@@ -59,19 +70,19 @@ public class OrganizerReviewsAdapter extends RecyclerView.Adapter<OrganizerRevie
 
     public class OrganizerReviewsAdapterViewHolder extends RecyclerView.ViewHolder{
         MaterialTextView name;
-        MaterialTextView message;
         ImageView image;
         MaterialTextView date;
         RatingBar ratingBar;
+        MaterialTextView message;
 
         public OrganizerReviewsAdapterViewHolder(View itemView){
 
             super(itemView);
             name = itemView.findViewById(R.id.layout_review_name);
-            message = itemView.findViewById(R.id.layout_review_message);
             image = itemView.findViewById(R.id.layout_review_image);
             date = itemView.findViewById(R.id.layout_review_date_time);
             ratingBar = itemView.findViewById(R.id.layout_review_ratting);
+            message = itemView.findViewById(R.id.layout_review_message);
 
         }
     }

@@ -15,12 +15,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.TripDetailsActivity;
+import com.e.maintabactivity.apiServises.RetrofitInstance;
+import com.e.maintabactivity.apiServises.UserApiInterface;
+import com.e.maintabactivity.models.NotificationModel;
+import com.e.maintabactivity.models.PersonModel;
+import com.e.maintabactivity.staticModels.StaticUserModel;
+import com.google.android.material.textview.MaterialTextView;
+
+import java.net.UnknownServiceException;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationTabFragmentAdapterViewHolder> {
 
-    private String[] notifications;
+    private List<NotificationModel> notifications;
     private Context context;
-    public NotificationAdapter(Context context, String [] notifications){
+
+    public NotificationAdapter(Context context, List<NotificationModel> notifications){
         this.context = context ;
         this.notifications = notifications;
     }
@@ -35,8 +49,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull NotificationTabFragmentAdapterViewHolder holder, int position) {
-        String message = notifications[position];
-        holder.message.setText(message);
+        NotificationModel notification = notifications.get(position);
+       // holder.message.setText(notificatio);
+        //PersonModel user = StaticUserModel.getUser()
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,7 +63,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public int getItemCount() {
-        return notifications.length;
+        return notifications.size();
     }
 
     public class NotificationTabFragmentAdapterViewHolder extends RecyclerView.ViewHolder{
@@ -68,6 +83,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
 
     }
+
 
 }
 

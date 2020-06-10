@@ -2,8 +2,7 @@ package com.e.maintabactivity.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.organizer.OrganizerProfileActivity;
 import com.e.maintabactivity.R;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -42,7 +42,10 @@ public class OrganizerListAdapter extends RecyclerView.Adapter<OrganizerListAdap
     public void onBindViewHolder(@NonNull OrganizerListAdapter.OrganizerListAdapterViewHolder holder, int position) {
         final PersonModel organizer = organizers.get(position);
         holder.name.setText(organizer.getFirst_name() + " " + organizer.getLast_name());
+        holder.companyName.setText(organizer.getOrganizer().getOrganization());
+        holder.ratings.setRating(organizer.getOrganizer().getRating());
         holder.ratings.setRating(3.5f);
+        Picasso.get().load(organizer.getImage()).into(holder.image);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

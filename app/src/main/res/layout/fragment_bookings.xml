@@ -6,13 +6,7 @@
     tools:context=".ui.BookingsFragment"
     android:orientation="vertical">
 
-   <com.google.android.material.textview.MaterialTextView
-       android:id="@+id/fragment_booking_no_booking"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:textSize="20sp"
-       android:layout_centerInParent="true"
-       android:gravity="center_vertical"/>
+
    <com.google.android.material.textview.MaterialTextView
        android:id="@+id/textView"
        android:layout_width="match_parent"
@@ -31,6 +25,17 @@
        android:layout_height="match_parent"
        android:layout_marginTop="5dp"
        android:layout_below="@+id/textView"/>
+
+   <com.google.android.material.textview.MaterialTextView
+       android:id="@+id/no_booking_message"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="No Booking to display."
+       android:textStyle="bold"
+       android:textSize="20sp"
+       android:gravity="center"
+       android:layout_centerInParent="true"
+       />
 
 
 </RelativeLayout>

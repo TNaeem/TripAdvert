@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "988626184138",
+    "firebase_url": "https://tripadvert-ec38b.firebaseio.com",
+    "project_id": "tripadvert-ec38b",
+    "storage_bucket": "tripadvert-ec38b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988626184138:android:32dede338213f73cad1133",
+        "android_client_info": {
+          "package_name": "com.e.maintabactivity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "988626184138-ll58sbae4qsn7u28hal4amk9j1ah0atj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIQK-xCJREDCoGwaiGw-R9-34DElCJ11k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "988626184138-ll58sbae4qsn7u28hal4amk9j1ah0atj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

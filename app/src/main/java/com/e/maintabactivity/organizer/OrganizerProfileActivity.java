@@ -43,6 +43,8 @@ public class OrganizerProfileActivity extends AppCompatActivity {
         mOrganizerImage = findViewById(R.id.activity_organizer_profile_image);
         mOrganizerName = findViewById(R.id.activity_organizer_profile_name);
         mOrganizerRating = findViewById(R.id.activity_organizer_profile_rating);
+        mOrganizerName.setText(personModel.getFirst_name() + " " + personModel.getLast_name());
+        mOrganizerRating.setRating(personModel.getOrganizer().getRating());
 
         Picasso.get().load(personModel.getImage()).into(mOrganizerImage);
         mOrganizerRating.setRating(personModel.getOrganizer().getRating());
@@ -56,6 +58,6 @@ public class OrganizerProfileActivity extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.icon_home);
         tabLayout.getTabAt(1).setIcon(R.drawable.icon_bookings);
-        tabLayout.getTabAt(2).setIcon(R.drawable.icon_chat);
+        tabLayout.getTabAt(2).setIcon(R.drawable.icon_review);
     }
 }

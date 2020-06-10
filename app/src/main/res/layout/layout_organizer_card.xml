@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,8 +10,8 @@
         android:id="@+id/layout_organizer_card_view"
         android:layout_width="match_parent"
         android:layout_height="170dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="7dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp"
         app:cardUseCompatPadding="true"
         >
         <RelativeLayout
@@ -39,9 +40,9 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/layout_organizer_card_name"
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
+                    android:layout_height="30dp"
                     android:text="Organizer Name"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
                     />
@@ -50,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:text="Organizer Company Name"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:maxLines="3"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/colorBlack"
@@ -58,19 +59,23 @@
                     />
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     >
-                    <RatingBar
 
+                    <RatingBar
                         android:id="@+id/layout_organizer_card_ratting"
+                        android:layout_below="@+id/single_trip_organizer_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:numStars="5"
-                        android:stepSize="0.1"
-                        android:layout_marginTop="5dp"
-                        android:isIndicator="true"
+                        android:layout_height="wrap_content"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:scaleX="0.8"
+                        android:rating="3.5"
+                        android:scaleY="0.8"
+                        android:transformPivotX="0dp"
+                        android:transformPivotY="0dp"
+                        android:max="5"
+
                         />
                     <ImageView
                         android:id="@+id/layout_organizer_card_isVerified"
@@ -82,24 +87,7 @@
 
                         />
                 </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp">
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/layout_organizer_card_trips"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Trips Organized: "
-                        />
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/layout_organizer_card_trips_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="15"
-                        android:layout_toRightOf="@+id/layout_organizer_card_trips"
-                        />
 
-                </RelativeLayout>
 
 
             </LinearLayout>

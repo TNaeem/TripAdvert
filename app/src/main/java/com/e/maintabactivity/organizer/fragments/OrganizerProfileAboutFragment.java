@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.e.maintabactivity.ChatActivity;
 import com.e.maintabactivity.PrivateTripActivity;
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.models.OrganizerModel;
 import com.e.maintabactivity.models.PersonModel;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 /**
@@ -32,13 +34,13 @@ public class OrganizerProfileAboutFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Button mChatBtn;
-    private Button mPrivateEventBtn;
+    private MaterialButton mPrivateEventBtn;
     private MaterialTextView mEmail;
     private MaterialTextView mCompanyName;
     private MaterialTextView mContact;
     private MaterialTextView mAddress;
     private ImageView mIsVerified;
+    private MaterialButton mChatBtn;
 
 
     public OrganizerProfileAboutFragment(PersonModel personModel) {
@@ -76,7 +78,7 @@ public class OrganizerProfileAboutFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_organizer_profile_about, container, false);
 
@@ -91,11 +93,22 @@ public class OrganizerProfileAboutFragment extends Fragment {
         mIsVerified = view.findViewById(R.id.layout_organizer_card_isVerified);
 
 
+        mChatBtn = view.findViewById(R.id.fragment_organizer_profile_about_btn_chat);
+        mChatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                intent.putExtra("UserId", personModel.getId());
+                //add contact in db if not available
+                startActivity(intent);
+            }
+        });
         mPrivateEventBtn = view.findViewById(R.id.fragment_organizer_profile_about_btn_private_event);
         mPrivateEventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), PrivateTripActivity.class);
+                intent.putExtra("UserId", personModel.getId());
                 startActivity(intent);
             }
         });

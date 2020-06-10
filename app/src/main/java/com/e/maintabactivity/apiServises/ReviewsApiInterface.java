@@ -9,16 +9,21 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ReviewsApiInterface {
 
-    @GET("reviews/{eventId}")
-    Call<List<ReviewModel>> getAllReviewsByEventId(@Path("eventId") int id) ;
+    @GET("reviews")
+    Call<List<ReviewModel>> getAllReviewsByOrganizerId(@Query("organizer") int organizerId);
 
-    @POST("reviews/{eventId}/add")
-    Call<ReviewModel> addReview(@Path("eventId") int id, @Body ReviewModel reviewModel);
+    // Add Review
+
+    @POST("reviews/")
+    Call<ReviewModel> addReview(@Body ReviewModel reviewModel);
 
     // Update Review
+    @POST("reviews/{reviewId}")
+    Call<ReviewModel> updateReview(@Path("reviewId") int did, @Body ReviewModel reviewModel);
 
     // Delete Review
 

@@ -2,7 +2,7 @@ package com.e.maintabactivity.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UserBookingModel {
+public class BookingModel {
 
     @SerializedName("is_verified")
     boolean is_verified;

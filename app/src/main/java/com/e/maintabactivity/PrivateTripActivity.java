@@ -10,6 +10,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.util.DateInterval;
 import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class PrivateTripActivity extends AppCompatActivity {
@@ -63,13 +65,6 @@ public class PrivateTripActivity extends AppCompatActivity {
 
         bindView();
 
-
-
-
-
-
-
-
         mDepartureDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +81,11 @@ public class PrivateTripActivity extends AppCompatActivity {
 
                         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
                         String mDateStr = sdf.format(myCalendar.getTime());
+                        long d = new Date().getTime();
+                        long d1 = myCalendar.getTime().getTime();
+                        long diff = d1 - d;
+
+                        Log.d(TAG, "Difference " + diff);
                         mDepartureDateTextView.setText(mDateStr);
                     }
 
@@ -114,6 +114,7 @@ public class PrivateTripActivity extends AppCompatActivity {
 
                         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
                         String mDateStr = sdf.format(myCalendar.getTime());
+                        Toast.makeText(PrivateTripActivity.this, "Arrival Time " + myCalendar.getTime(), Toast.LENGTH_SHORT).show();
                         mArrivalDateTextView.setText(mDateStr);
                     }
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.e.maintabactivity.apiServises.LoginApiInterface;
 import com.e.maintabactivity.apiServises.RetrofitInstance;
+import com.e.maintabactivity.apiServises.UserApiInterface;
 import com.e.maintabactivity.models.LoginModel;
 import com.e.maintabactivity.models.OrganizerModel;
 import com.e.maintabactivity.models.PersonModel;
@@ -50,12 +52,15 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -71,6 +76,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,12 +85,13 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
+    private Context context = this;
 
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
     private Button mLoginBtn;
-    private Button mFbBtn;
-    private SignInButton mGoogleBtn;
+    private CircleImageView mFbBtn;
+    private CircleImageView mGoogleBtn;
     private MaterialTextView mSinUpBtn;
 
 
@@ -92,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     private LoginManager loginManager;
     private CallbackManager callbackManager;
     private GoogleSignInClient mGoogleSignInClient;
+    private String firebaseInstanceToken;
     private static final int SIGN_IN = 1;
 
     private String first_name = "";
@@ -101,18 +109,35 @@ public class LoginActivity extends AppCompatActivity {
     private String userId = "";
 
     LoginApiInterface loginApiInterface;
+    UserApiInterface userApiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         bindView();
+        loginApiInterface = RetrofitInstance.getRetrofitInstance().create(LoginApiInterface.class);
+        userApiInterface = RetrofitInstance.getRetrofitInstance().create(UserApiInterface.class);
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            //Checking app registration
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if(!task .isSuccessful()){
+                    Log.i(TAG, "Task Failed");
+                    return;
+                }
+                firebaseInstanceToken = task.getResult().getToken();
+
+            }
+        });
+
         if(isUserLoggedIn()){
             Log.d(TAG, "User Logged In: ");
             moveTo(MainActivity.class);
         }
 
-        loginApiInterface = RetrofitInstance.getRetrofitInstance().create(LoginApiInterface.class);
+
         mFbBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -128,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
-        mGoogleBtn.setSize(SignInButton.SIZE_STANDARD);
+
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +184,28 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    public void postFirebaseInstanceToken(String token){
+        int userId = UserSharedPreference.getUser(context).getId();
+        userApiInterface.postFirebaseInstanceId(userId, token).enqueue(new Callback<PersonModel>() {
+            @Override
+            public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
+                if(response.body()!= null ){
+                    PersonModel p = response.body();
+                    UserSharedPreference.saveUser(context, p);
+                    Log.d(TAG, "onResponse: Firebase" + response + " " + p.getFirebaseInstanceId());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<PersonModel> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
 
     private boolean isUserLoggedIn(){
         Log.d(TAG, "isUserLoggedIn: " + UserSharedPreference.getUser(LoginActivity.this));
@@ -196,7 +243,9 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "onResponse: " + UserSharedPreference.getUser(LoginActivity.this));
                 }else{
                     postUser(imageURL);
+                    postFirebaseInstanceToken(firebaseInstanceToken);
                 }
+
             }
 
             @Override
@@ -227,7 +276,6 @@ public class LoginActivity extends AppCompatActivity {
                 UserSharedPreference.saveUser(LoginActivity.this, res);
                 Log.d(TAG, "onResponse: User Posted" );
             }
-
             @Override
             public void onFailure(Call<PersonModel> call, Throwable t) {
                 Log.d(TAG, "onFailure: PostUser " + t.getMessage());

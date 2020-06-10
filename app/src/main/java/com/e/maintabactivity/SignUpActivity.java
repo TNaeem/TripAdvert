@@ -1,5 +1,6 @@
 package com.e.maintabactivity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,14 +18,19 @@ import android.widget.Toast;
 
 import com.e.maintabactivity.apiServises.LoginApiInterface;
 import com.e.maintabactivity.apiServises.RetrofitInstance;
+import com.e.maintabactivity.apiServises.UserApiInterface;
 import com.e.maintabactivity.models.OrganizerModel;
 import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.models.UserModel;
 import com.e.maintabactivity.ui.HomeFragment;
 import com.e.maintabactivity.utility.UserSharedPreference;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -51,9 +57,12 @@ public class SignUpActivity extends AppCompatActivity {
     private de.hdodenhof.circleimageview.CircleImageView mImage;
 
     LoginApiInterface loginApiInterface;
+    UserApiInterface userApiInterface;
+    String firebaseInstanceToken;
     private PersonModel personModel;
     private UserModel user;
     Uri imageUrl;
+    private Context context = this;
 
 
 
@@ -64,8 +73,21 @@ public class SignUpActivity extends AppCompatActivity {
         personModel = new PersonModel();
         user = new UserModel();
 
-        loginApiInterface = RetrofitInstance.getRetrofitInstance().create(LoginApiInterface.class);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            //Checking app registration
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if(!task .isSuccessful()){
+                    Log.i(TAG, "Task Failed");
+                    return;
+                }
+                firebaseInstanceToken = task.getResult().getToken();
 
+            }
+        });
+
+        loginApiInterface = RetrofitInstance.getRetrofitInstance().create(LoginApiInterface.class);
+        userApiInterface = RetrofitInstance.getRetrofitInstance().create(UserApiInterface.class);
         bindView();
 
         mImage.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +180,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void postUser(PersonModel personModel){
 
+        personModel.setUser_type(1);
 
         loginApiInterface.postUser(personModel).enqueue(new Callback<PersonModel>() {
             @Override
@@ -165,6 +188,7 @@ public class SignUpActivity extends AppCompatActivity {
                 PersonModel res = response.body();
                 // Shared preference
                 UserSharedPreference.saveUser(SignUpActivity.this, res);
+                postFirebaseInstanceToken(firebaseInstanceToken);
                 Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -176,6 +200,25 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    public void postFirebaseInstanceToken(String token){
+        int userId = UserSharedPreference.getUser(context).getId();
+        userApiInterface.postFirebaseInstanceId(userId, token).enqueue(new Callback<PersonModel>() {
+            @Override
+            public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
+                if(response.body()!= null ){
+                    PersonModel p = response.body();
+                    UserSharedPreference.saveUser(context, p);
+                    Log.d(TAG, "onResponse: Firebase" + response + " " + p.getFirebaseInstanceId());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<PersonModel> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
 
 
     private String encodeBase64(Bitmap bitmap){

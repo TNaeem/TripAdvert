@@ -1,7 +1,6 @@
 package com.e.maintabactivity.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.e.maintabactivity.R;
-import com.e.maintabactivity.TripDetailsActivity;
-import com.e.maintabactivity.apiServises.EventsApiInterface;
 import com.e.maintabactivity.models.EventModel;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
@@ -31,7 +28,7 @@ public class ProfileTripsAdapter extends RecyclerView.Adapter<ProfileTripsAdapte
 
     public ProfileTripsAdapter.ProfileTripsAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.layout_profile_trip_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.layout_orgnizer_profile_trip_item, parent, false);
         return new ProfileTripsAdapter.ProfileTripsAdapterViewHolder(view);
     }
 

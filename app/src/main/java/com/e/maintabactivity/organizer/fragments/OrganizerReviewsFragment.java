@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.e.maintabactivity.R;
+import com.google.android.material.textview.MaterialTextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +29,7 @@ public class OrganizerReviewsFragment extends Fragment {
     private String mParam2;
 
     private RecyclerView mRecyclerView;
+    private MaterialTextView noReviews;
 
     public OrganizerReviewsFragment() {
         // Required empty public constructor
@@ -68,7 +70,6 @@ public class OrganizerReviewsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView = view.findViewById(R.id.fragment_organizer_reviews_recyclerView);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-
         return view;
     }
 

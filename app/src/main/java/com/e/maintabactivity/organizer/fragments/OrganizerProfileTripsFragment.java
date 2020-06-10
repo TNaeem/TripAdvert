@@ -12,12 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.e.maintabactivity.apiServises.EventsApiInterface;
-import com.e.maintabactivity.apiServises.OrganizerApiInterface;
 import com.e.maintabactivity.apiServises.RetrofitInstance;
 import com.e.maintabactivity.models.EventModel;
 import com.e.maintabactivity.organizer.adapters.OrganizerProfileTripsAdapter;
 import com.e.maintabactivity.R;
+import com.google.android.material.textview.MaterialTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,8 +41,9 @@ public class OrganizerProfileTripsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
-    String[] trips = {"Title 1", "Title 2"} ;
+    private MaterialTextView noTrips;
     private EventsApiInterface mEventsApiInterface;
+    private List<EventModel> allPortfolioEvents;
 
     public OrganizerProfileTripsFragment(int organizerId) {
         this.organizerId = organizerId;
@@ -73,15 +75,18 @@ public class OrganizerProfileTripsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_organizer_profile_trips, container, false);
-
+        noTrips = view.findViewById(R.id.no_trips_message);
         mEventsApiInterface = RetrofitInstance.getRetrofitInstance().create(EventsApiInterface.class);
         getTripsByOrganizerId();
-
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false);
         recyclerView = view.findViewById(R.id.fragment_organizer_profile_trips_recycler_view);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+
+
+
+        recyclerView.setAdapter(new OrganizerProfileTripsAdapter(getContext(), new ArrayList<EventModel>()));
         return view;
     }
 
@@ -90,8 +95,10 @@ public class OrganizerProfileTripsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<EventModel>> call, Response<List<EventModel>> response) {
                 if(response.body() != null){
-                    List<EventModel> events = response.body();
-                    recyclerView.setAdapter(new OrganizerProfileTripsAdapter(getContext(), events));
+                    noTrips.setVisibility(View.GONE);
+                    allPortfolioEvents= response.body();
+                    recyclerView.setAdapter(new OrganizerProfileTripsAdapter(getContext(),
+                                                allPortfolioEvents));
                 }
                 Log.d(TAG, "onResponse: " + response);
 

@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".organizer.fragments.OrganizerReviewsFragment">
 
+   <com.google.android.material.textview.MaterialTextView
+       android:id="@+id/text"
+       android:layout_width="match_parent"
+       android:layout_height="40dp"
+       android:text="Reviews"
+       android:paddingLeft="15dp"
+       android:textSize="30sp"
+       android:textStyle="bold"
+       android:textColor="@color/colorBlack"
+       android:layout_gravity="center_horizontal"
+       android:layout_marginTop="10dp"/>
    <androidx.recyclerview.widget.RecyclerView
+       android:layout_below="@+id/text"
        android:id="@+id/fragment_organizer_reviews_recyclerView"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
+       android:layout_height="match_parent"
+       android:layout_marginTop="10dp"/>
 
-</FrameLayout>
+   <com.google.android.material.textview.MaterialTextView
+       android:id="@+id/no_reviews_message"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="No Reviews to display."
+       android:textStyle="bold"
+       android:textSize="20sp"
+       android:gravity="center"
+       android:layout_centerInParent="true"
+       />
+
+</RelativeLayout>

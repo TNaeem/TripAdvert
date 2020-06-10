@@ -7,33 +7,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.e.maintabactivity.apiServises.LoginApiInterface;
 import com.e.maintabactivity.apiServises.RetrofitInstance;
 import com.e.maintabactivity.apiServises.UserApiInterface;
-import com.e.maintabactivity.models.OrganizerModel;
 import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.models.UserModel;
-import com.e.maintabactivity.ui.HomeFragment;
 import com.e.maintabactivity.utility.UserSharedPreference;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.BlockingDeque;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,8 +62,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         userApiInterface = RetrofitInstance.getRetrofitInstance().create(UserApiInterface.class);
 
-
-
         mImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,8 +83,14 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 personModel.setPhone_no(mContact.getText().toString());
                 personModel.setUser_type(1);
                 personModel.getUser().setAddress(mAddress.getText().toString());
-                BitmapDrawable drawable = (BitmapDrawable) mImage.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
+                //BitmapDrawable drawable = (BitmapDrawable) mImage.getDrawable();
+                //Bitmap bitmap = drawable.getBitmap();
+                //personModel.setImage(encodeBase64(bitmap));
+                mImage.buildDrawingCache();
+                Bitmap bitmap = mImage.getDrawingCache();
+
+
+
                 personModel.setImage(encodeBase64(bitmap));
                 updateUser();
 
@@ -131,7 +126,13 @@ public class UpdateProfileActivity extends AppCompatActivity {
     }
 
     void setExistingDetails(PersonModel p){
-        Picasso.get().load(p.getImage()).into(mImage);
+        Log.d(TAG, "setExistingDetails: " + p.getImage());
+        if(p.getImage() != null){
+            Picasso.get().load(p.getImage()).into(mImage);
+        }else{
+            Picasso.get().load(R.drawable.person_image).into(mImage);
+        }
+
         mFirstName.setText(p.getFirst_name());
         mLastName.setText(p.getLast_name());
         mContact.setText(p.getPhone_no());
@@ -145,7 +146,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
             public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
                 if(response.body() != null){
                     UserSharedPreference.removeUser(mContext);
-                    UserSharedPreference.saveUser(mContext, response.body());
+                     personModel = response.body();
+                     UserSharedPreference.saveUser(mContext, personModel);
+
+
+                    //UserSharedPreference.saveUser(mContext, response.body());
                     Log.d(TAG, "onResponse: User Updated "  + response.body());
                     Intent intent = new Intent(mContext, MainActivity.class);
                     startActivity(intent);

@@ -1,18 +1,16 @@
 package com.e.maintabactivity.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.e.maintabactivity.R;
-import com.e.maintabactivity.models.UserBookingModel;
+import com.e.maintabactivity.models.BookingModel;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -20,9 +18,9 @@ import java.util.List;
 
 public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapter.UserBookingsAdapterViewHolder> {
 
-    private List<UserBookingModel> bookingModelList;
+    private List<BookingModel> bookingModelList;
     private Context context;
-    public UserBookingsAdapter(Context context, List<UserBookingModel> bookingModelList){
+    public UserBookingsAdapter(Context context, List<BookingModel> bookingModelList){
         this.context = context;
         this.bookingModelList = bookingModelList;
     }
@@ -37,7 +35,7 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull UserBookingsAdapter.UserBookingsAdapterViewHolder holder, int position) {
-        UserBookingModel bookingModel = bookingModelList.get(position);
+        BookingModel bookingModel = bookingModelList.get(position);
         holder.tripTitle.setText(bookingModel.getEventDetails().getTitle());
         holder.amount.setText(bookingModel.getEventDetails().getPrice() + " Rs");
         holder.date.setText(bookingModel.getEventDetails().getDateOfDeparture());

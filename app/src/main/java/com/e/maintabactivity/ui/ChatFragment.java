@@ -1,17 +1,29 @@
 package com.e.maintabactivity.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.e.maintabactivity.ChatActivity;
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.adapters.ChatFragmentAdapter;
+import com.e.maintabactivity.models.ContactModel;
+import com.e.maintabactivity.models.PersonModel;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,10 +40,15 @@ public class ChatFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private RecyclerView mRecyclerView;
-    private String[] chatContacts = {"Contact 1",  "Contact 2"};
+
+    private List<ContactModel> mContacts = new ArrayList<ContactModel>();
 
     public ChatFragment() {
         // Required empty public constructor
+
+        mContacts.add(new ContactModel(new PersonModel(1),"Talha is :3",new Date()));
+        mContacts.add(new ContactModel(new PersonModel(2),"Attiq is :3",new Date()));
+        mContacts.add(new ContactModel(new PersonModel(3),"Uzair is :3",new Date()));
     }
 
     public static ChatFragment newInstance(String param1, String param2) {
@@ -60,7 +77,13 @@ public class ChatFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.fragment_chat_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setAdapter(new ChatFragmentAdapter(this.getContext(), chatContacts));
+
+        ChatFragmentAdapter chatFragmentAdapter = new ChatFragmentAdapter(this.getContext(), mContacts);
+
+        mRecyclerView.setAdapter(chatFragmentAdapter);
+
+
+
         return view;
     }
 }

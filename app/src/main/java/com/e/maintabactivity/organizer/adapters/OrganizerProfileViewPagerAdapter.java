@@ -13,6 +13,7 @@ import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.organizer.fragments.OrganizerProfileAboutFragment;
 import com.e.maintabactivity.organizer.fragments.OrganizerProfileGalleryFragment;
 import com.e.maintabactivity.organizer.fragments.OrganizerProfileTripsFragment;
+import com.e.maintabactivity.organizer.fragments.ReviewsFragment;
 import com.google.gson.Gson;
 
 public class OrganizerProfileViewPagerAdapter extends FragmentPagerAdapter {
@@ -35,7 +36,7 @@ public class OrganizerProfileViewPagerAdapter extends FragmentPagerAdapter {
         }else if(position == 1){
             return new OrganizerProfileTripsFragment(mPersonModel.getOrganizer().getId());
         }else if(position == 2){
-            return new OrganizerProfileGalleryFragment(mPersonModel.getId());
+            return new ReviewsFragment(mPersonModel.getOrganizer().getId());
         }
         return new OrganizerProfileAboutFragment(mPersonModel);
 

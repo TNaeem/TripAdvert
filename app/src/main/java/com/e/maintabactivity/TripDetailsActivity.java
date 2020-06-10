@@ -65,12 +65,22 @@ public class TripDetailsActivity extends AppCompatActivity {
 
     private MaterialTextView mTripTitle;
     private MaterialTextView mTripDetail;
+
     private ImageView mIsAccommodation;
-    private ImageView mIsSightSeeing;
-    private ImageView mIsFood;
     private MaterialTextView mAccommodationDes;
+    private ImageView mAccommodation;
+    private MaterialTextView mAccommodationText;
+
+    private ImageView mIsSightSeeing;
     private MaterialTextView mSightSeeingDes;
+    private ImageView mSightSeeing;
+    private MaterialTextView mSightSeeingText;
+
+    private ImageView mIsFood;
     private MaterialTextView mFoodDes;
+    private ImageView mFood;
+    private MaterialTextView mFoodText;
+
     private MaterialTextView mHomeLocation;
     private MaterialTextView mDestinationLocation;
     private MaterialTextView mDepartureDate;
@@ -91,6 +101,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private EventImagesApiInterface mEventImagesApiInterface;
     private List<ImageModel> imageModelList;
     private GridView mGridView;
+    androidx.appcompat.widget.Toolbar toolbar;
 
 
     @Override
@@ -99,6 +110,8 @@ public class TripDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_trip_detail);
 
         bindViews();
+
+        toolbar = findViewById(R.id.trip_detail_toolbar);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -122,10 +135,6 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         loadEventData(eventModel);
         loadOrganizerData(organizer);
-
-        // Setting data
-
-
 
         mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,13 +165,14 @@ public class TripDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String task = String.valueOf(mBookingCount.getText());
+                        Integer bookingCount = Integer.valueOf(task);
+
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
     }
-
     private void loadOrganizerData(PersonModel organizer){
         mOrganizerName.setText(organizer.getFirst_name() + " " + organizer.getLast_name());
         Picasso.get().load(organizer.getImage()).into(mOrganizerImage);
@@ -173,30 +183,36 @@ public class TripDetailsActivity extends AppCompatActivity {
     }
     private void loadEventData(EventModel eventModel){
         Picasso.get().load(eventModel.getPic()).into(mTripImage);
-        mTripTitle.setText(eventModel.getTitle());
+        //mTripTitle.setText(eventModel.getTitle());
+        toolbar.setTitle(eventModel.getTitle());
         mTripDetail.setText(eventModel.getDescription());
         mSightSeeingDes.setText(eventModel.getSightseeingDescription());
         if(!eventModel.isSightseeing()){
-            mIsSightSeeing.setImageResource(R.drawable.icon_cancel);
-            mIsSightSeeing.setColorFilter(R.color.redColor);
+            mSightSeeing.setVisibility(View.GONE);
+            mSightSeeingText.setText("");
+            mIsSightSeeing.setVisibility(View.GONE);
             mSightSeeingDes.setText("");
         }
         mAccommodationDes.setText(eventModel.getAccommodationDescription());
         if(!eventModel.isAccommodated()){
-            mIsAccommodation.setImageResource(R.drawable.icon_cancel);
-            mIsAccommodation.setColorFilter(R.color.redColor);
+            mAccommodation.setVisibility(View.GONE);
+            mAccommodationText.setText("");
+            mIsAccommodation.setVisibility(View.GONE);
             mAccommodationDes.setText("");
         }
         mFoodDes.setText(eventModel.getFoodDescription());
         if(!eventModel.isFood()){
-            mIsFood.setImageResource(R.drawable.icon_cancel);
-            mIsFood.setColorFilter(R.color.redColor);
+            mFood.setVisibility(View.GONE);
+            mFoodText.setText("");
+            mIsFood.setVisibility(View.GONE);
             mFoodDes.setText("");
         }
         mDepartureDate.setText(eventModel.getDateOfDeparture());
         mHomeBackDate.setText(eventModel.getDateOfArrival());
         mDestinationLocation.setText(eventModel.getDestination());
         mHomeLocation.setText(eventModel.getHome());
+        mTotalSlots.setText(String.valueOf(eventModel.getSlots()));
+        //mAvailableSlots.setText(eventModel.getAvailableSlots());
         //mTotalSlots.setText(eventModel.getSlots());
 
     }
@@ -209,12 +225,22 @@ public class TripDetailsActivity extends AppCompatActivity {
         mTripImage    = findViewById(R.id.activity_trip_detail_image);
         mTripTitle = findViewById(R.id.activity_trip_detail_trip_title);
         mTripDetail = findViewById(R.id.activity_trip_detail_trip_detail);
+
         mIsSightSeeing = findViewById(R.id.sight_seeing_check);
-        mIsAccommodation = findViewById(R.id.accommodation_check);
-        mIsFood = findViewById(R.id.food_check);
-        mAccommodationDes = findViewById(R.id.accommodation_description);
+        mSightSeeing = findViewById(R.id.trip_sightseeing_image);
         mSightSeeingDes = findViewById(R.id.sight_seeing_description);
+        mSightSeeingText = findViewById(R.id.trip_sightseeing);
+
+        mIsAccommodation = findViewById(R.id.accommodation_check);
+        mAccommodation = findViewById(R.id.trip_accommodation_image);
+        mAccommodationText = findViewById(R.id.trip_accommodation);
+        mAccommodationDes = findViewById(R.id.accommodation_description);
+
+        mIsFood = findViewById(R.id.food_check);
+        mFood = findViewById(R.id.trip_food_image);
+        mFoodText = findViewById(R.id.trip_food);
         mFoodDes = findViewById(R.id.food_description);
+
         mDepartureDate = findViewById(R.id.departure_date);
         mDestinationLocation = findViewById(R.id.destination_location);
         mHomeBackDate = findViewById(R.id.homeBack_date);
@@ -229,7 +255,6 @@ public class TripDetailsActivity extends AppCompatActivity {
         mRatingBar = findViewById(R.id.single_trip_organizer_ratting);
         mIsVerified = findViewById(R.id.single_trip_organizer_verify);
     }
-
     private void getImagesByEventId(int eventId){
         mEventImagesApiInterface.getImagesByEventId(eventId).enqueue(new Callback<List<ImageModel>>() {
             @Override
@@ -257,7 +282,6 @@ public class TripDetailsActivity extends AppCompatActivity {
             }
         });
     }
-
     public List<String> extractImages( List<ImageModel> imageModels){
         List<String> images = new ArrayList<String>();
         for( ImageModel i : imageModels){
@@ -265,5 +289,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         }
         return images;
     }
+
+
 
 }

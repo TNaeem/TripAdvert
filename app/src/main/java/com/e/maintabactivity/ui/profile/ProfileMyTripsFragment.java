@@ -15,11 +15,16 @@ import com.e.maintabactivity.R;
 import com.e.maintabactivity.adapters.ProfileTripsAdapter;
 import com.e.maintabactivity.apiServises.EventsApiInterface;
 import com.e.maintabactivity.apiServises.RetrofitInstance;
+import com.e.maintabactivity.apiServises.ReviewsApiInterface;
 import com.e.maintabactivity.apiServises.UserApiInterface;
 import com.e.maintabactivity.models.EventModel;
+import com.e.maintabactivity.models.ReviewModel;
+import com.e.maintabactivity.models.UserPortfolioEventModel;
 import com.e.maintabactivity.organizer.adapters.OrganizerProfileTripsAdapter;
 import com.e.maintabactivity.utility.UserSharedPreference;
+import com.google.android.material.textview.MaterialTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,6 +43,13 @@ public class ProfileMyTripsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private EventsApiInterface mEventsApiInterface;
+
+    private List<UserPortfolioEventModel> mMyEvents;
+    private UserApiInterface mUserApiInterface;
+    private ProfileMyTripsAdapter mProfileMyTripsAdapter;
+    private MaterialTextView noTrips;
+
+    private int mUserId;
 
 
     public ProfileMyTripsFragment() {
@@ -68,25 +80,36 @@ public class ProfileMyTripsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mEventsApiInterface = RetrofitInstance.getRetrofitInstance().create(EventsApiInterface.class);
-        int userId = UserSharedPreference.getUser(getContext()).getId();
-        getTripsByOrganizerId(userId);
+        mUserApiInterface = RetrofitInstance.getRetrofitInstance().create(UserApiInterface.class);
+
+        mUserId = UserSharedPreference.getUser(getContext()).getId();
+        //getTripsByOrganizerId(mUserId);
+        getAllReviewedEvents(mUserId);
+
 
         View view = inflater.inflate(R.layout.fragment_profile_my_trips, container, false);
+        noTrips = view.findViewById(R.id.no_trips_message);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false);
         recyclerView = view.findViewById(R.id.fragment_profile_my_trips_recycler_view);
         recyclerView.setLayoutManager(linearLayoutManager);
+        mProfileMyTripsAdapter = new ProfileMyTripsAdapter(getContext(), new ArrayList<UserPortfolioEventModel>());
+        recyclerView.setAdapter(mProfileMyTripsAdapter);
 
         return view;
     }
 
+    // ... anonymous ...
     private void getTripsByOrganizerId(int userId){
         mEventsApiInterface.getPortfolioEventsByUserId(userId).enqueue(new Callback<List<EventModel>>() {
             @Override
             public void onResponse(Call<List<EventModel>> call, Response<List<EventModel>> response) {
-                if(response.body() != null){
-                    List<EventModel> events = response.body();
-                    recyclerView.setAdapter(new ProfileTripsAdapter(getContext(), events));
+               /* if(response.body() != null){
+                    List<UserPortfolioEventModel> events = response.body();
+                    recyclerView.setAdapter(new ProfileMyTripsAdapter(getContext(), events));
                 }
+                */
+
                 Log.d(TAG, "onResponse: " + response);
             }
             @Override
@@ -95,4 +118,45 @@ public class ProfileMyTripsFragment extends Fragment {
             }
         });
     }
+
+    public void getAllPendingReviewEvents(int mUserId){
+        mUserApiInterface.getPendingReviewedEvents(mUserId).enqueue(new Callback<List<UserPortfolioEventModel>>() {
+            @Override
+            public void onResponse(Call<List<UserPortfolioEventModel>> call, Response<List<UserPortfolioEventModel>> response) {
+                if(response.body() != null && response.body().size() > 0 ){
+                    mMyEvents = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserPortfolioEventModel>> call, Throwable t) {
+                Log.d(TAG, "onFailure: getAllPendingReviewEvents " + t.getMessage());
+            }
+        });
+    }
+    public void getAllReviewedEvents(final int mUserId){
+
+        mUserApiInterface.getAllReviewedEvents(mUserId).enqueue(new Callback<List<UserPortfolioEventModel>>() {
+            @Override
+            public void onResponse(Call<List<UserPortfolioEventModel>> call, Response<List<UserPortfolioEventModel>> response) {
+                getAllPendingReviewEvents(mUserId);
+                if(response.body() != null && response.body().size() > 0){
+                    if(mMyEvents != null)
+                        mMyEvents.addAll(response.body());
+                    else
+                        mMyEvents = response.body();
+                    noTrips.setVisibility(View.GONE);
+                    mProfileMyTripsAdapter = new ProfileMyTripsAdapter(getContext(), mMyEvents);
+                    recyclerView.setAdapter(mProfileMyTripsAdapter);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserPortfolioEventModel>> call, Throwable t) {
+                Log.d(TAG, "onFailure: getAllReviewedEvents " + t.getMessage());
+            }
+        });
+    }
+
 }

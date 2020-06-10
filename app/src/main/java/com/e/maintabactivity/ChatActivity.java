@@ -1,44 +1,116 @@
 package com.e.maintabactivity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import com.e.maintabactivity.adapters.FeaturedEventsAdapter;
-import com.e.maintabactivity.R;
+import com.e.maintabactivity.adapters.ChatMessagesAdapter;
+import com.e.maintabactivity.models.ContactModel;
+import com.e.maintabactivity.models.MessageModel;
+import com.e.maintabactivity.models.PersonModel;
+import com.e.maintabactivity.utility.UserSharedPreference;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
 
+    private static final String TAG = "ChatActivity";
+    private Context context = this;
+    
     private de.hdodenhof.circleimageview.CircleImageView mImage;
     private TextView mName;
-    private TextInputEditText mMessage;
+    private EditText mMessage;
     private AppCompatImageButton mSendBtn;
     private RecyclerView mRecyclerView;
-    private String[] messages = {"Hello", "How are you", "sjefwefse fosfoisfns fsvnsvnsl vljvwnvwl vwlvwnlnw"};
+    private ChatMessagesAdapter chatMessagesAdapter;
+    private List<MessageModel> mChatMessages = new ArrayList<MessageModel>();
+    private int minId;
+    private int maxId;
+    private int myId;
+    private int receiverId;
+    private DatabaseReference myRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
         bindView();
 
-        LinearLayoutManager featuredEventLinearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        mRecyclerView.setLayoutManager(featuredEventLinearLayoutManager);
-        mRecyclerView.setAdapter(new FeaturedEventsAdapter(this, messages));
+        receiverId = getIntent().getIntExtra("UserId",0);
+        myId = UserSharedPreference.getUser(context).getId();
+
+
+        minId = Math.min(receiverId, myId);
+        maxId = Math.max(receiverId, myId);
+
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("messages");
+
+        // Read from the database
+        myRef.child((minId +  ":" + maxId)).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                List<MessageModel> list = new ArrayList<>();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    list.add(childDataSnapshot.getValue(MessageModel.class));
+                }
+                chatMessagesAdapter.setmMessages(list);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+        
+        
+        
+        
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        chatMessagesAdapter = new ChatMessagesAdapter(this, mChatMessages);
+        mRecyclerView.setAdapter(chatMessagesAdapter);
 
         mSendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg = mMessage.getText().toString();
                 if(msg.trim() != null){
-                    messages[messages.length + 1] = msg;
+                    MessageModel messageModel = new MessageModel(myId, receiverId, msg, new Date());
+                    myRef.child(minId +  ":" + maxId).push().setValue(messageModel, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                            //
+                        }
+                    });
                 }
 
             }

@@ -30,10 +30,15 @@ import com.e.maintabactivity.apiServises.RetrofitInstance;
 import com.e.maintabactivity.models.EventModel;
 import com.e.maintabactivity.models.EventModelResponse;
 import com.e.maintabactivity.models.PersonModel;
+import com.e.maintabactivity.staticModels.StaticEventModel;
+import com.e.maintabactivity.staticModels.StaticOrganizerModel;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+import javax.sql.StatementEventListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -96,7 +101,10 @@ public class HomeFragment extends Fragment implements MainActivity.SearchableFra
 
         mOrganizerApiInterface = RetrofitInstance.getRetrofitInstance().create(OrganizerApiInterface.class);
         mEventsApiInterface = RetrofitInstance.getRetrofitInstance().create(EventsApiInterface.class);
+
         getAllOrganizers();
+
+
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -110,23 +118,28 @@ public class HomeFragment extends Fragment implements MainActivity.SearchableFra
         mFeaturedEventRecyclerView.setLayoutManager(featuredEventLinearLayoutManager);
         mFeaturedEventRecyclerView.setAdapter(new FeaturedEventsAdapter(getContext(), trips));
         // Inflate the layout for this fragment
-        homeTabAdapter= new HomeTabAdapter(getContext(), new ArrayList<EventModel>(), new ArrayList<PersonModel>());
+        if(StaticEventModel.allEvents != null && StaticOrganizerModel.allOrganizers != null){
+            homeTabAdapter= new HomeTabAdapter(getContext(), StaticEventModel.allEvents ,StaticOrganizerModel.allOrganizers);
+        }else{
+            homeTabAdapter= new HomeTabAdapter(getContext(), new ArrayList<EventModel>() ,new ArrayList<PersonModel>());
+        }
         mRecyclerView.setAdapter(homeTabAdapter);
         return view;
     }
 
     private void getAllEvents(){
+        if(StaticEventModel.allEvents != null){
+            return;
+        }
         mEventsApiInterface.getAllEvents().enqueue(new Callback<EventModelResponse>() {
             @Override
             public void onResponse(Call<EventModelResponse> call, Response<EventModelResponse> response) {
                 if(response.body() != null){
-
-                    mEventModelResponse = response.body();
-                    homeTabAdapter= new HomeTabAdapter(getContext(), mEventModelResponse.getResults(), organizersList);
+                    Log.d(TAG, "onResponse: calling events " + response);
+                    StaticEventModel.allEvents = response.body().getResults();
+                    homeTabAdapter= new HomeTabAdapter(getContext(), StaticEventModel.allEvents, StaticOrganizerModel.allOrganizers);
                     mRecyclerView.setAdapter(homeTabAdapter);
                     adapter = true;
-                    Log.d(TAG, "onResponse: " + adapter);
-
                 }
             }
             @Override
@@ -138,12 +151,20 @@ public class HomeFragment extends Fragment implements MainActivity.SearchableFra
 
     private void getAllOrganizers(){
 
+        if(StaticOrganizerModel.allOrganizers != null){
+            getAllEvents();
+            return;
+        }
         mOrganizerApiInterface.getAllOrganizers(USER_TYPE).enqueue(new Callback<List<PersonModel>>() {
             @Override
             public void onResponse(Call<List<PersonModel>> call, Response<List<PersonModel>> response) {
                 if(response.body() != null){
-                    organizersList = response.body();
+                    Log.d(TAG, "onResponse: calling organizers " + response);
+                    StaticOrganizerModel.allOrganizers = response.body();
                     getAllEvents();
+
+
+
                 }
             }
 

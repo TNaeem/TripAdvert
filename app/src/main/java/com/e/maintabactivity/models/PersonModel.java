@@ -35,15 +35,27 @@ public class PersonModel {
     @SerializedName("user_type")
     int user_type;
 
+    @SerializedName("firebaseinstancetoken")
+    String firebaseInstanceId;
+
     @SerializedName("user")
     UserModel user = null;
 
     @SerializedName("organizer")
     OrganizerModel organizer = null;
 
+    public PersonModel(int id){
+        this.id = id;
+    }
     public PersonModel(){
     }
+    public String getFirebaseInstanceId() {
+        return firebaseInstanceId;
+    }
 
+    public void setFirebaseInstanceId(String firebaseInstanceId) {
+        this.firebaseInstanceId = firebaseInstanceId;
+    }
     public int getId() {
         return id;
     }

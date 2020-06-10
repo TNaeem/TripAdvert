@@ -82,7 +82,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingHorizontal="8dp"
-            android:src="@drawable/icon_home"
+            android:src="@drawable/icon_people"
             android:tint="@color/colorPrimary" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -123,7 +123,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingHorizontal="8dp"
-            android:src="@drawable/icon_home"
+            android:src="@drawable/icon_money"
             android:tint="@color/colorPrimary" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -160,7 +160,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingHorizontal="8dp"
-            android:src="@drawable/icon_home"
+            android:src="@drawable/icon_date"
             android:tint="@color/colorPrimary" />
 
             <com.google.android.material.button.MaterialButton
@@ -187,7 +187,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="4-21-2020"
+        android:text=""
         android:textSize="20sp"
         android:layout_marginLeft="8dp"/>
 
@@ -209,7 +209,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingHorizontal="8dp"
-            android:src="@drawable/icon_home"
+            android:src="@drawable/icon_date"
             android:tint="@color/colorPrimary" />
 
         <com.google.android.material.button.MaterialButton
@@ -235,7 +235,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="4-21-2020"
+        android:text=""
         android:textSize="20sp"
         android:layout_marginLeft="8dp"
         />
@@ -258,7 +258,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingHorizontal="8dp"
-            android:src="@drawable/icon_home"
+            android:src="@drawable/icon_location"
             android:tint="@color/colorPrimary" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -299,7 +299,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingHorizontal="8dp"
-            android:src="@drawable/icon_home"
+            android:src="@drawable/icon_location"
             android:tint="@color/colorPrimary" />
 
         <com.google.android.material.textfield.TextInputLayout

@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UpdateProfileActivity"></activity>
+        <activity android:name=".SettingsActivity"></activity>
         <activity android:name=".ReviewsList" />
 
         <meta-data
@@ -50,18 +50,25 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".SplashActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".ChatActivity" />
-        <activity
-            android:name=".LoginActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+        <service android:name=".services.AppFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".UpdateProfileActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"></activity>
         <activity android:name=".PrivateTripActivity" />
         <activity android:name=".TripDetailsActivity" />
         <activity android:name=".organizer.OrganizerProfileActivity" />
