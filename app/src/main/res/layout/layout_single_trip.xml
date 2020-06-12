@@ -54,6 +54,7 @@
                         android:gravity="center"
                         />
                 </com.google.android.material.card.MaterialCardView>
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/trip_discount"
                     android:layout_width="100dp"

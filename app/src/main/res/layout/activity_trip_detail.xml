@@ -202,6 +202,7 @@
                     android:id="@+id/trip_accommodation_image"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
+                    android:visibility="invisible"
                     android:src="@drawable/icon_accommodation"/>
                 <com.google.android.material.textview.MaterialTextView
 
@@ -317,7 +318,7 @@
                 android:background="@color/gray"
                 android:layout_marginHorizontal="20dp"/>
 
-            //Schedule
+<!--            //Schedule-->
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

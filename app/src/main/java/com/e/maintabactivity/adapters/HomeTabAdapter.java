@@ -74,8 +74,7 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.HomeTabF
         holder.tripTitle.setText(eventModel.getTitle());
         Picasso.get().load(eventModel.getPic()).into(holder.tripImage);
         holder.tripPrice.setText(eventModel.getPrice() + " Rs");
-        holder.destination.setText(eventModel.getDestination());
-        holder.home.setText(eventModel.getHome());
+        holder.destination.setText(eventModel.getHome() + " - "+ eventModel.getDestination());
         holder.date.setText(eventModel.getDateOfDeparture());
 
         final PersonModel organizer = getOrganizer(eventModel.getOrganizer().getId());

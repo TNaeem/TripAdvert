@@ -28,7 +28,7 @@ public class NotificationUtils {
 
     public static final String CHANNEL_ID = "Sca_App";
     public static final CharSequence CHANNEL_NAME = "SCA App";
-    public static final String CHANNEL_DESC = "Study Connections Academy Notifications";
+    public static final String CHANNEL_DESC = "Notifications";
 
     private final static AtomicInteger c = new AtomicInteger(0);
 

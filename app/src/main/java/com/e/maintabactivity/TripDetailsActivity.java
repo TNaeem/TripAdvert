@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.e.maintabactivity.apiServises.RetrofitInstance;
 import com.e.maintabactivity.apiServises.UserApiInterface;
 import com.e.maintabactivity.models.BookingModel;
 import com.e.maintabactivity.models.EventModel;
+import com.e.maintabactivity.models.EventScheduleModel;
 import com.e.maintabactivity.models.ImageModel;
 import com.e.maintabactivity.models.NewEventModel;
 import com.e.maintabactivity.models.PersonModel;
@@ -151,17 +153,18 @@ public class TripDetailsActivity extends AppCompatActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 // add the inflated View to the layoutS
-        for(int i=0; i<3;i++){
+        for(EventScheduleModel model : eventModel.getScheduleList()){
 
 
-            View v = (View) findViewById(R.layout.layout_schedule);
-            Log.d(TAG, "onCreate: " + v);
-            mScheduleDay = v.findViewById(R.id.schedule_day);
-            mScheduleDesc = v.findViewById(R.id.schedule_description);
-            mScheduleDay.setText("Day " + i);
-            mScheduleDesc.setText("Some Description");
+            View childView = getLayoutInflater().inflate(R.layout.layout_schedule, mLinearLayout, false);
 
-            mLinearLayout.addView(v);
+            Log.d(TAG, "onCreate: " + childView);
+            mScheduleDay = childView.findViewById(R.id.schedule_day);
+            mScheduleDesc = childView.findViewById(R.id.schedule_description);
+            mScheduleDay.setText("Day " + model.getDay());
+            mScheduleDesc.setText(model.getDescription());
+
+            mLinearLayout.addView(childView);
         }
 
         // OnCLick on Organizer cardView

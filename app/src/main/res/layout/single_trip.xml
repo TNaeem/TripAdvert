@@ -1,141 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:layout_height="wrap_content">
 
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15sp">
+        android:layout_marginHorizontal="7dp"
+        android:layout_marginVertical="7dp"
+        app:cardCornerRadius="7dp"
+        app:cardElevation="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="10dp">
+
             <ImageView
                 android:id="@+id/trip_image"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:src="@drawable/trip_location"
                 android:scaleType="centerCrop"
-                android:transitionName="single_trip_image"
-                />
+                android:src="@drawable/trip_location"
+                android:transitionName="single_trip_image" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                app:cardCornerRadius="10dp"
+                android:elevation="10dp">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/single_trip_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="600 Rs"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
+                    android:textAlignment="center"
+                    android:background="@color/colorPrimaryDark"
+                    android:gravity="center" />
+            </com.google.android.material.card.MaterialCardView>
 
             <RelativeLayout
                 android:id="@+id/trip_details"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_gradient"
                 android:layout_alignBottom="@+id/trip_image"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                >
+                android:paddingHorizontal="10dp">
 
                 <TextView
                     android:id="@+id/trip_title"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="30dp"
+                    android:paddingTop="10dp"
                     android:text="Title of trip"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
                     android:textColor="@color/colorWhite"
-                    android:alpha="0.8"
-                    android:paddingTop="10dp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/trip_title"
-                    android:paddingTop="10dp"
                     android:layout_marginBottom="10dp"
-                    >
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingTop="5dp">
 
                     <TextView
                         android:id="@+id/single_trip_start_point"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:text="Our Destination"
-                        android:layout_weight="1"
-                        android:gravity="left"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorWhite"
-                        android:alpha="0.7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:drawableLeft="@drawable/destination"
-                        />
+                        android:layout_weight="1"
+                        android:alpha="0.7"
+                        android:drawablePadding="3dp"
+                        android:drawableLeft="@drawable/ic_location_on_black_16dp"
+                        android:gravity="left"
+                        android:text="Our Destination"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="15sp" />
+
                     <TextView
                         android:id="@+id/single_trip_date"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:text="1 - 15 March 2020"
-                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:gravity="right"
-                        android:textSize="18sp"
-                        android:textColor="@color/colorWhite"
                         android:alpha="0.7"
-                        />
+                        android:drawablePadding="3dp"
+                        android:drawableLeft="@drawable/ic_date_range_black_16dp"
+                        android:text="1 - 15 March 2020"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp"/>
                 </LinearLayout>
+
             </RelativeLayout>
+
             <com.google.android.material.card.MaterialCardView
-                android:layout_below="@+id/trip_details"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                app:cardElevation="10dp"
-                >
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/trip_details"
+                app:cardElevation="10dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginTop="8dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginRight="10dp"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_below="@+id/trip_title"
-                        android:layout_marginBottom="10dp"
-                        >
+                    android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/single_trip_destination"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:text="( Start Point )"
-                            android:layout_weight="3"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:gravity="center_vertical"
-                            />
-                        <TextView
-                            android:id="@+id/single_trip_price"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:text="600 Rs"
-                            android:textStyle="bold"
-                            android:layout_weight="1"
-                            android:textSize="22sp"
-                            android:textAlignment="center"
-                            android:background="#f5bc42"
-                            tools:ignore="RtlCompat"
-                            android:gravity="center_vertical"
-                            android:inputType="number"
-                            />
-                    </LinearLayout>
-                    <include layout="@layout/organizer_layout"/>
+                    <include layout="@layout/organizer_layout" />
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
         </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-
 
 
 </RelativeLayout>

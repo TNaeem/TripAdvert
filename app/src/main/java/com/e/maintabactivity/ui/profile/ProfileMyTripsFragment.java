@@ -33,8 +33,6 @@ import retrofit2.Response;
 
 public class ProfileMyTripsFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "ProfileMyTripsFragment";
 
 
@@ -51,28 +49,9 @@ public class ProfileMyTripsFragment extends Fragment {
 
     private int mUserId;
 
-
-    public ProfileMyTripsFragment() {
-        // Required empty public constructor
-    }
-
-
-    public static ProfileMyTripsFragment newInstance(String param1, String param2) {
-        ProfileMyTripsFragment fragment = new ProfileMyTripsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override

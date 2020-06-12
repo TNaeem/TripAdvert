@@ -12,11 +12,10 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:text="Notifications"
         android:paddingLeft="15dp"
-        android:textSize="30sp"
-        android:textStyle="bold"
+        android:textSize="20sp"
         android:textColor="@color/colorBlack"
         android:layout_gravity="center_horizontal"
         />
@@ -33,8 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="No Notification to display"
-        android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:gravity="center"
         android:layout_centerInParent="true"
         />

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "988626184138-optl3tv9l3m6soaaspd9rp2h84bh3cir.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.e.maintabactivity",
+            "certificate_hash": "326ace3b7dc4cc7a661ae2d3590a47d0bfad2629"
+          }
+        },
+        {
           "client_id": "988626184138-ll58sbae4qsn7u28hal4amk9j1ah0atj.apps.googleusercontent.com",
           "client_type": 3
         }
