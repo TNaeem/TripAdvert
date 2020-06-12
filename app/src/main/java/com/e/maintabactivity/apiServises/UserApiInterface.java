@@ -8,6 +8,7 @@ import com.e.maintabactivity.models.BookingModel;
 import com.e.maintabactivity.models.UserPortfolioEventModel;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -21,7 +22,7 @@ public interface UserApiInterface {
 
     //Update Profile
     @PUT("users/update/{personId}")
-    Call<PersonModel> updateUser(@Path("personId") int id, @Body PersonModel personModel);
+    Call<PersonModel> updateUser(@Path("personId") int id,@Body Map<String, String> map);
 
     // All bookings by a specific user
     @GET("user-bookings/")

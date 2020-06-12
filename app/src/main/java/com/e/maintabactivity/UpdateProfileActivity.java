@@ -34,7 +34,9 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -124,17 +126,20 @@ public class UpdateProfileActivity extends AppCompatActivity implements Validato
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if(requestCode == PICK_IMAGE && resultCode == RESULT_OK){
             Uri imageUrl = data.getData();
             try{
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUrl);
                 mImage.setImageBitmap(bitmap);
-                String img = encodeBase64(bitmap);
-                personModel.setImage(img);
+                //String img = encodeBase64(bitmap);
+                //personModel.setImage(img);
             }catch(IOException e){
                 e.printStackTrace();
             }
         }
+
+
     }
 
 
@@ -167,8 +172,8 @@ public class UpdateProfileActivity extends AppCompatActivity implements Validato
     }
 
 
-    private void updateUser(){
-        userApiInterface.updateUser(personModel.getId(), personModel).enqueue(new Callback<PersonModel>() {
+    private void updateUser(Map<String, String> map){
+        userApiInterface.updateUser(personModel.getId(), map).enqueue(new Callback<PersonModel>() {
             @Override
             public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
                 if(response.body() != null){
@@ -205,13 +210,29 @@ public class UpdateProfileActivity extends AppCompatActivity implements Validato
 
     @Override
     public void onValidationSucceeded() {
+        /*
         personModel.setFirst_name(mFirstName.getText().toString());
         personModel.setLast_name(mLastName.getText().toString());
 
         personModel.setPhone_no(mContact.getText().toString());
         personModel.setUser_type(1);
         personModel.getUser().setAddress(mAddress.getText().toString());
-        updateUser();
+
+        personModel.setImage(encodeBase64(bitmap));
+         */
+        BitmapDrawable drawable = (BitmapDrawable) mImage.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("first_name", mFirstName.getText().toString());
+        map.put("last_name", mLastName.getText().toString());
+        map.put("image", encodeBase64(bitmap));
+        map.put("user_type", "1");
+        map.put("address", mAddress.getText().toString());
+        map.put("phone_no", mContact.getText().toString());
+
+        updateUser(map);
 
     }
 

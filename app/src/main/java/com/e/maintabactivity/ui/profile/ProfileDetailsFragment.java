@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class ProfileDetailsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "ProfileDetailsFragment";
 
     // TODO: Rename and change types of parameters
     private Context mContext;
@@ -98,6 +100,7 @@ public class ProfileDetailsFragment extends Fragment {
             mContact.setText(personModel.getPhone_no());
         }
 
+        Log.d(TAG, "onCreateView: " + personModel.getUser().getAddress());
         return view;
     }
 
