@@ -13,32 +13,58 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
+import android.widget.Toast;
 
 import com.e.maintabactivity.apiServises.RetrofitInstance;
 import com.e.maintabactivity.apiServises.UserApiInterface;
 import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.models.UserModel;
+import com.e.maintabactivity.services.UserServices;
 import com.e.maintabactivity.utility.UserSharedPreference;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UpdateProfileActivity extends AppCompatActivity {
+public class UpdateProfileActivity extends AppCompatActivity implements Validator.ValidationListener{
 
     private static final String TAG = "UpdateProfileActivity";
     private static final int PICK_IMAGE = 1;
 
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 3, max = 30, message = "First Name must be from 3 to 30 characters in length")
+    @Pattern(sequence = 3, regex = "^[a-zA-Z ]*$", message = "First Name can only contain alphabets and spaces")
     private TextInputEditText mFirstName;
+
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 3, max = 30, message = "Last Name must be from 3 to 30 characters in length")
+    @Pattern(sequence = 3, regex = "^[a-zA-Z ]*$", message = "Last Name can only contain alphabets and spaces")
     private TextInputEditText mLastName;
+
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 3, max = 50, message = "Address must be from 3 to 30 characters in length")
+    @Pattern(sequence = 3, regex = "^[A-Za-z0-9_\\-\\#]+$", message = "Address can only contain A-Z a-z 0-9 # - _")
     private TextInputEditText mAddress;
+
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 11, max = 11, message = "Contact must be 11 characters in length")
+    @Pattern(sequence = 3, regex = "^[0-9]+$", message = "Contact can only contain 0-9")
     private TextInputEditText mContact;
+
     private MaterialButton mSubmitBtn;
     private de.hdodenhof.circleimageview.CircleImageView mImage;
 
@@ -47,6 +73,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private UserModel user;
     Uri imageUrl;
     private Context mContext;
+    private Validator mValidator;
 
 
 
@@ -77,25 +104,20 @@ public class UpdateProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                personModel.setFirst_name(mFirstName.getText().toString());
-                personModel.setLast_name(mLastName.getText().toString());
-
-                personModel.setPhone_no(mContact.getText().toString());
-                personModel.setUser_type(1);
-                personModel.getUser().setAddress(mAddress.getText().toString());
-                //BitmapDrawable drawable = (BitmapDrawable) mImage.getDrawable();
-                //Bitmap bitmap = drawable.getBitmap();
-                //personModel.setImage(encodeBase64(bitmap));
-                mImage.buildDrawingCache();
-                Bitmap bitmap = mImage.getDrawingCache();
-
-
-
-                personModel.setImage(encodeBase64(bitmap));
-                updateUser();
+                mValidator.validate();
 
             }
         });
+
+        mValidator = new Validator(this);
+        mValidator.setValidationListener(this);
+        mValidator.setViewValidatedAction(new Validator.ViewValidatedAction() {
+            @Override
+            public void onAllRulesPassed(View view) {
+                ((TextInputLayout) view.getParent().getParent()).setError(null);
+            }
+        });
+
     }
 
     @Override
@@ -128,7 +150,12 @@ public class UpdateProfileActivity extends AppCompatActivity {
     void setExistingDetails(PersonModel p){
         Log.d(TAG, "setExistingDetails: " + p.getImage());
         if(p.getImage() != null){
-            Picasso.get().load(p.getImage()).into(mImage);
+            boolean isImageOK = UserServices.verifyImage(personModel.getImage());
+            if(isImageOK){
+                Picasso.get().load(p.getImage()).into(mImage);
+            }else{
+                Picasso.get().load(RetrofitInstance.BASE_URL+personModel.getImage()).into(mImage);
+            }
         }else{
             Picasso.get().load(R.drawable.person_image).into(mImage);
         }
@@ -176,4 +203,29 @@ public class UpdateProfileActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onValidationSucceeded() {
+        personModel.setFirst_name(mFirstName.getText().toString());
+        personModel.setLast_name(mLastName.getText().toString());
+
+        personModel.setPhone_no(mContact.getText().toString());
+        personModel.setUser_type(1);
+        personModel.getUser().setAddress(mAddress.getText().toString());
+        updateUser();
+
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            ViewParent view = error.getView().getParent().getParent();
+            String message = error.getFailedRules().get(0).getMessage(this);
+
+            if (view instanceof TextInputLayout) {
+                ((TextInputLayout) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

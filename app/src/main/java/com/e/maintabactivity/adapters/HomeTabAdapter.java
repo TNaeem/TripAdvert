@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.e.maintabactivity.TripDetailsActivity;
 import com.e.maintabactivity.apiServises.EventImagesApiInterface;
 import com.e.maintabactivity.models.EventModel;
+import com.e.maintabactivity.models.NewEventModel;
 import com.e.maintabactivity.models.OrganizerModel;
 import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.organizer.OrganizerProfileActivity;
 import com.e.maintabactivity.R;
+import com.e.maintabactivity.staticModels.StaticUserModel;
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Preconditions;
 import com.squareup.picasso.Picasso;
@@ -35,16 +37,16 @@ import java.util.List;
 
 public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.HomeTabFragmentAdapterViewHolder> implements Filterable {
 
-    private List<EventModel> mTrips;
-    private List<EventModel> mTripsAll;
+    private List<NewEventModel> mTrips;
+    private List<NewEventModel> mTripsAll;
     List<PersonModel> mOrganizersList;
     Context context;
     private static final String TAG = "HomeTabAdapter";
     
-    public HomeTabAdapter(Context context, List<EventModel> trips, List<PersonModel> organizersList){
+    public HomeTabAdapter(Context context, List<NewEventModel> trips, List<PersonModel> mOrganizersList){
         this.context = context;
         this.mTrips = trips;
-        this.mOrganizersList = organizersList;
+        this.mOrganizersList = mOrganizersList;
         this.mTripsAll = new ArrayList<>(mTrips);
     }
 
@@ -68,7 +70,7 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.HomeTabF
 
     @Override
     public void onBindViewHolder(@NonNull HomeTabFragmentAdapterViewHolder holder, int position) {
-        final EventModel eventModel = mTrips.get(position);
+        final NewEventModel eventModel = mTrips.get(position);
         holder.tripTitle.setText(eventModel.getTitle());
         Picasso.get().load(eventModel.getPic()).into(holder.tripImage);
         holder.tripPrice.setText(eventModel.getPrice() + " Rs");
@@ -76,7 +78,7 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.HomeTabF
         holder.home.setText(eventModel.getHome());
         holder.date.setText(eventModel.getDateOfDeparture());
 
-        final PersonModel organizer = getOrganizer(eventModel.getOrganizer());
+        final PersonModel organizer = getOrganizer(eventModel.getOrganizer().getId());
         holder.organizerName.setText(organizer.getFirst_name() + " " + organizer.getLast_name());
         holder.ratingBar.setRating(organizer.getOrganizer().getRating());
         Picasso.get().load(organizer.getImage()).into(holder.organizerImage);
@@ -119,13 +121,13 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.HomeTabF
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<EventModel> filteredEvents = new ArrayList<>();
+            List<NewEventModel> filteredEvents = new ArrayList<>();
             if(constraint.toString().isEmpty()){
                 filteredEvents.addAll(mTripsAll);
                 Log.d(TAG, "performFiltering: Empty" );
             }else{
                 Log.d(TAG, "performFiltering: " + constraint);
-                for( EventModel e : mTripsAll){
+                for( NewEventModel e : mTripsAll){
 
                     if(e.getTitle().toLowerCase().contains(constraint.toString().toLowerCase())
                     || e.getDestination().toLowerCase().contains(constraint.toString().toLowerCase())
@@ -144,7 +146,7 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.HomeTabF
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             mTrips.clear();
-            mTrips.addAll((Collection<? extends EventModel>) results.values);
+            mTrips.addAll((Collection<? extends NewEventModel>) results.values);
             Log.d(TAG, "publishResults: " + mTrips.size());
             notifyDataSetChanged();
         }

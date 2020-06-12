@@ -21,6 +21,7 @@ import com.e.maintabactivity.staticModels.StaticUserBookingModel;
 import com.e.maintabactivity.utility.UserSharedPreference;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -74,7 +75,6 @@ public class BookingsFragment extends Fragment {
         // Inflate the layout for this fragment
         userApiInterface = RetrofitInstance.getRetrofitInstance().create(UserApiInterface.class);
         PersonModel loggedInUser = UserSharedPreference.getUser(getContext());
-        Log.d(TAG, "onCreateView: " + loggedInUser);
         int userId = loggedInUser.getId();
 
         View view = inflater.inflate(R.layout.fragment_bookings, container, false);
@@ -84,11 +84,11 @@ public class BookingsFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        if(StaticUserBookingModel.allBookings == null) {
+
             getAllBookingsByUserId(userId);
-        }else{
-            mRecyclerView.setAdapter(new UserBookingsAdapter(getContext(), StaticUserBookingModel.allBookings));
-        }
+
+            mRecyclerView.setAdapter(new UserBookingsAdapter(getContext(), new ArrayList<BookingModel>()));
+
         return view;
     }
 
@@ -96,7 +96,7 @@ public class BookingsFragment extends Fragment {
         userApiInterface.getBookingsByUserIde(id).enqueue(new Callback<List<BookingModel>>() {
             @Override
             public void onResponse(Call<List<BookingModel>> call, Response<List<BookingModel>> response) {
-                if(response.body() != null && response.body().size() > 0){
+                if(response.body() != null){
                     mNoBookings.setVisibility(View.GONE);
                     StaticUserBookingModel.allBookings = response.body();
                     mRecyclerView.setAdapter(new UserBookingsAdapter(getContext(), StaticUserBookingModel.allBookings));

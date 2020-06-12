@@ -45,22 +45,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.Api;
+
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textview.MaterialTextView;
 
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -68,14 +59,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.net.UnknownServiceException;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button mLoginBtn;
     private CircleImageView mFbBtn;
     private CircleImageView mGoogleBtn;
-    private MaterialTextView mSinUpBtn;
+    private MaterialTextView mSignUp;
 
 
 
@@ -116,28 +102,19 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         bindView();
+
+        // APi interfaces
         loginApiInterface = RetrofitInstance.getRetrofitInstance().create(LoginApiInterface.class);
         userApiInterface = RetrofitInstance.getRetrofitInstance().create(UserApiInterface.class);
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-            //Checking app registration
-            @Override
-            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                if(!task .isSuccessful()){
-                    Log.i(TAG, "Task Failed");
-                    return;
-                }
-                firebaseInstanceToken = task.getResult().getToken();
 
-            }
-        });
-
+        // Check whether user is logged in
         if(isUserLoggedIn()){
             Log.d(TAG, "User Logged In: ");
             moveTo(MainActivity.class);
         }
 
-
+        // FB signIn
         mFbBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -151,9 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-
-
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,14 +135,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
+        // Manual Login
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String e = mEmail.getText().toString();
                 String p = mPassword.getText().toString();
                 LoginModel loginModel = new LoginModel(e, p);
-                Toast.makeText(LoginActivity.this, e + p, Toast.LENGTH_SHORT).show();
                 auth(loginModel);
                 if(UserSharedPreference.getUser(LoginActivity.this) != null){
                     Log.d(TAG, "onClick: Moving to main activity");
@@ -177,35 +150,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mSinUpBtn.setOnClickListener(new View.OnClickListener() {
+        // Sign-up
+        mSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveTo(SignUpActivity.class);
+                startActivity(new Intent(context, SignUpActivity.class));
             }
         });
     }
-
-
-    public void postFirebaseInstanceToken(String token){
-        int userId = UserSharedPreference.getUser(context).getId();
-        userApiInterface.postFirebaseInstanceId(userId, token).enqueue(new Callback<PersonModel>() {
-            @Override
-            public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
-                if(response.body()!= null ){
-                    PersonModel p = response.body();
-                    UserSharedPreference.saveUser(context, p);
-                    Log.d(TAG, "onResponse: Firebase" + response + " " + p.getFirebaseInstanceId());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<PersonModel> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-    }
-
 
     private boolean isUserLoggedIn(){
         Log.d(TAG, "isUserLoggedIn: " + UserSharedPreference.getUser(LoginActivity.this));
@@ -222,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(personModel != null ){
                     UserSharedPreference.saveUser(LoginActivity.this,personModel);
                     Log.d(TAG, "User Logged in: ");
+                    moveTo(MainActivity.class);
                 }
             }
 
@@ -240,10 +193,10 @@ public class LoginActivity extends AppCompatActivity {
                 if(response.body() != null){
                     Log.d(TAG, "onResponse: email exists" + personModel.get(0));
                     UserSharedPreference.saveUser(LoginActivity.this, personModel.get(0));
+
                     Log.d(TAG, "onResponse: " + UserSharedPreference.getUser(LoginActivity.this));
                 }else{
                     postUser(imageURL);
-                    postFirebaseInstanceToken(firebaseInstanceToken);
                 }
 
             }
@@ -262,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
         p.setLast_name(last_name);
         p.setEmail(email);
         p.setPassword("123");
-        p.setPhone_no("03123456789");
+        p.setPhone_no("");
         p.setImage(image);
         p.setUser_type(1);
         p.setUser(new UserModel());
@@ -402,7 +355,7 @@ public class LoginActivity extends AppCompatActivity {
         mLoginBtn = findViewById(R.id.activity_login_btn_Sign_in);
         mFbBtn    =  findViewById(R.id.activity_login_fb_btn);
         mGoogleBtn= findViewById(R.id.activity_login_google_btn);
-        mSinUpBtn = findViewById(R.id.activity_login_sign_up_btn);
+        mSignUp = findViewById(R.id.activity_login_sign_up_btn);
     }
 
     @Override
@@ -433,7 +386,6 @@ public class LoginActivity extends AppCompatActivity {
 
             imageURL = encodeBase64(bitmap);
             if(UserSharedPreference.getUser(LoginActivity.this) == null){
-                Toast.makeText(LoginActivity.this, "Saving new User", Toast.LENGTH_SHORT).show();
                 doesEmailExist(email);
             }
         }

@@ -2,6 +2,7 @@ package com.e.maintabactivity.organizer.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.TripDetailsActivity;
+import com.e.maintabactivity.apiServises.RetrofitInstance;
 import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.models.ReviewModel;
+import com.e.maintabactivity.services.UserServices;
 import com.e.maintabactivity.staticModels.StaticUserModel;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
@@ -26,7 +29,10 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class OrganizerReviewsAdapter extends RecyclerView.Adapter<OrganizerReviewsAdapter.OrganizerReviewsAdapterViewHolder> {
+
+    private static final String TAG = "OrganizerReviewsAdapter";
     private List<ReviewModel> reviews;
+    
     private Context context;
     int organizerId;
     public OrganizerReviewsAdapter(Context context, List<ReviewModel> reviews, int organizerId){
@@ -53,7 +59,18 @@ public class OrganizerReviewsAdapter extends RecyclerView.Adapter<OrganizerRevie
         holder.message.setText(reviewModel.getMessage());
         holder.date.setText(reviewModel.getDate());
         PersonModel user = StaticUserModel.getUser(reviewModel.getUser());
-        Picasso.get().load(user.getImage()).into(holder.image);
+        Log.d(TAG, "onBindViewHolder: " + user + " " + reviewModel.getUser());
+
+        if(user.getImage()!= null){
+            boolean isImageOK = UserServices.verifyImage(user.getImage());
+            if(isImageOK){
+                Picasso.get().load(user.getImage()).into(holder.image);
+            }else{
+                Picasso.get().load(RetrofitInstance.BASE_URL+user.getImage()).into(holder.image);
+            }
+        }else{
+            Picasso.get().load(user.getImage()).into(holder.image);
+        }
         holder.name.setText(user.getFirst_name() + " " + user.getLast_name());
 
 

@@ -1,6 +1,7 @@
 package com.e.maintabactivity.apiServises;
 
 import com.e.maintabactivity.models.EventModel;
+import com.e.maintabactivity.models.FirebaseInstanceModel;
 import com.e.maintabactivity.models.NotificationModel;
 import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.models.BookingModel;
@@ -23,12 +24,12 @@ public interface UserApiInterface {
     Call<PersonModel> updateUser(@Path("personId") int id, @Body PersonModel personModel);
 
     // All bookings by a specific user
-    @GET("user-bookings")
+    @GET("user-bookings/")
     Call<List<BookingModel>> getBookingsByUserIde(@Query("user") int id);
 
     // Add booking
-    @POST("")
-    Call<Void> addBooking(@Body BookingModel bookingModel);
+    @POST("event-bookings/")
+    Call<BookingModel> addBooking(@Body BookingModel bookingModel);
 
 
     //@GET("reviews/{userId}")
@@ -38,11 +39,11 @@ public interface UserApiInterface {
     @GET("events/reviewed/{userId}")
     Call<List<UserPortfolioEventModel>> getAllReviewedEvents(@Path("userId") int id);
 
-    @GET("notifications")
+    @GET("notifications/")
     Call<List<NotificationModel>> getAllNotifications(@Query("sentFor") int id);
 
     @POST("persons/set_firebase_token/{userId}")
-    Call<PersonModel> postFirebaseInstanceId(@Path("userId") int userId, @Body String firebase_token);
+    Call<PersonModel> postFirebaseInstanceId(@Path("userId") int userId, @Body FirebaseInstanceModel firebaseInstanceModel);
 
 
 

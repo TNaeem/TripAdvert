@@ -9,6 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.e.maintabactivity.models.LoginModel;
+import com.e.maintabactivity.staticModels.StaticEventModel;
+import com.e.maintabactivity.staticModels.StaticOrganizerModel;
+import com.e.maintabactivity.staticModels.StaticUserBookingModel;
+import com.e.maintabactivity.staticModels.StaticUserModel;
 import com.e.maintabactivity.utility.UserSharedPreference;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -19,6 +24,7 @@ import com.google.android.material.card.MaterialCardView;
 public class SettingsActivity extends AppCompatActivity {
 
     Context context = this;
+    private static final String TAG = "SettingsActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +37,10 @@ public class SettingsActivity extends AppCompatActivity {
                 UserSharedPreference.removeUser(context);
                 Log.d("TAG", " User after logout " + UserSharedPreference.getUser(context));
 
-                LoginManager.getInstance().logOut();
-                Toast.makeText(context, "Logout", Toast.LENGTH_SHORT).show();
+                if(LoginManager.getInstance()!= null){
+                    LoginManager.getInstance().logOut();
+                    Log.d(TAG, "onClick: Facebook Logout " );
+                }
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
                         .build();
@@ -40,6 +48,12 @@ public class SettingsActivity extends AppCompatActivity {
                 GoogleSignInClient googleSignInClient  = GoogleSignIn.getClient(context, gso);
                 googleSignInClient.signOut();
 
+
+                // Removing data
+                StaticEventModel.allEvents = null;
+                StaticOrganizerModel.allOrganizers = null;
+                StaticUserBookingModel.allBookings = null;
+                StaticUserModel.allUsers = null;
 
                 Intent intent = new Intent(context, LoginActivity.class);
                 startActivity(intent);

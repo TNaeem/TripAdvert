@@ -19,14 +19,17 @@ import com.e.maintabactivity.adapters.ChatMessagesAdapter;
 import com.e.maintabactivity.models.ContactModel;
 import com.e.maintabactivity.models.MessageModel;
 import com.e.maintabactivity.models.PersonModel;
+import com.e.maintabactivity.staticModels.StaticOrganizerModel;
 import com.e.maintabactivity.utility.UserSharedPreference;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +38,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -53,6 +58,11 @@ public class ChatActivity extends AppCompatActivity {
     private int myId;
     private int receiverId;
     private DatabaseReference myRef;
+    private String senderName;
+    private String receiverName;
+
+    private CircleImageView mUserImage;
+    private MaterialTextView mUserName;
 
 
     @Override
@@ -61,9 +71,13 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         bindView();
 
-        receiverId = getIntent().getIntExtra("UserId",0);
+        receiverId = getIntent().getIntExtra("userId", 0);
+        Log.d(TAG, "onCreate: " + receiverId);
+        receiverName = getIntent().getStringExtra("userName");
         myId = UserSharedPreference.getUser(context).getId();
-
+        senderName = UserSharedPreference.getUser(context).getFirst_name();
+        PersonModel organizer = StaticOrganizerModel.getOrganizer(receiverId);
+        Log.d(TAG, "onCreate: " + receiverId + " " + organizer);
 
         minId = Math.min(receiverId, myId);
         maxId = Math.max(receiverId, myId);
@@ -89,28 +103,30 @@ public class ChatActivity extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-        
-        
-        
-        
+
+
+        Picasso.get().load(organizer.getImage()).into(mImage);
+        mName.setText(receiverName);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         chatMessagesAdapter = new ChatMessagesAdapter(this, mChatMessages);
         mRecyclerView.setAdapter(chatMessagesAdapter);
 
+        // sending message
         mSendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg = mMessage.getText().toString();
                 if(msg.trim() != null){
-                    MessageModel messageModel = new MessageModel(myId, receiverId, msg, new Date());
+                    MessageModel messageModel = new MessageModel(myId, receiverId, msg, new Date(), senderName, receiverName);
                     myRef.child(minId +  ":" + maxId).push().setValue(messageModel, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                             //
                         }
                     });
+                    mMessage.setText("");
                 }
 
             }
@@ -123,5 +139,6 @@ public class ChatActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.activity_chat_recycler_view);
         mMessage      = findViewById(R.id.activity_chat_message_text);
         mSendBtn      = findViewById(R.id.activity_chat_send_btn);
+
     }
 }

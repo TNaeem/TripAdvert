@@ -14,7 +14,7 @@ public interface OrganizerApiInterface {
 
 
     // All organizers
-    @GET("persons")
+    @GET("persons/")
     Call<List<PersonModel>> getAllOrganizers(@Query("user_type") int user_type);
 
 

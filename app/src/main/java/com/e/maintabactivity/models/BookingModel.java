@@ -16,6 +16,17 @@ public class BookingModel {
     @SerializedName("event_details")
     EventModel eventDetails;
 
+    @SerializedName("date")
+    String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public boolean isIs_verified() {
         return is_verified;
     }

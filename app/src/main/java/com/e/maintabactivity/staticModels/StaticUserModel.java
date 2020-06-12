@@ -6,6 +6,7 @@ import java.util.List;
 
 public class StaticUserModel {
 
+    public static String firebaseInstanceId;
     public static List<PersonModel> allUsers;
 
     public static PersonModel getUser(int id){

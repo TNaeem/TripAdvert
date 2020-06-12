@@ -74,12 +74,11 @@ public class OrganizerListFragment extends Fragment {
 
         mOrganizerApiInterface = RetrofitInstance.getRetrofitInstance().create(OrganizerApiInterface.class);
 
-
-
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView = view.findViewById(R.id.fragment_organizer_list_resyclerView);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        //
         if(StaticOrganizerModel.allOrganizers == null){
             getAllOrganizers();
         }else {

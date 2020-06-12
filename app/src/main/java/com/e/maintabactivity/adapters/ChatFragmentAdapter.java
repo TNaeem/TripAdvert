@@ -2,16 +2,12 @@ package com.e.maintabactivity.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -20,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.e.maintabactivity.ChatActivity;
 import com.e.maintabactivity.R;
 import com.e.maintabactivity.models.ContactModel;
-import com.google.android.material.card.MaterialCardView;
+import com.e.maintabactivity.models.PersonModel;
+import com.e.maintabactivity.staticModels.StaticOrganizerModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,10 +30,16 @@ public class ChatFragmentAdapter extends RecyclerView.Adapter<ChatFragmentAdapte
     private Context mContext;
 
 
-    public ChatFragmentAdapter(Context context, List<ContactModel> contacts){
+    public ChatFragmentAdapter(Context context, List<ContactModel> mContacts){
         this.mContext = context ;
-        this.mContacts = contacts;
+        this.mContacts = mContacts;
     }
+
+    public void setContacts(List<ContactModel> mContacts){
+        this.mContacts = mContacts;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
 
@@ -47,15 +51,32 @@ public class ChatFragmentAdapter extends RecyclerView.Adapter<ChatFragmentAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ChatFragmentAdapterViewHolder holder, int position) {
+
+
+
         final ContactModel contact = mContacts.get(position);
-        //holder.message.setText(msg);
+
+        PersonModel organizer = StaticOrganizerModel.getOrganizer(contact.getId());
+        holder.message.setText(contact.getMessage().getMessage());
+        holder.personName.setText(contact.getName());
+        holder.date.setText(contact.getMessage().getDate());
+        if(organizer != null){
+            Picasso.get().load(organizer.getImage()).into(holder.personImage);
+        }else{
+            Picasso.get().load(R.drawable.icon_sample_profile).into(holder.personImage);
+
+        }
+
         Log.d(TAG, "onBindViewHolder: " + holder.cardView);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: " +" Chat ");
                 Intent intent = new Intent(v.getContext(), ChatActivity.class);
-                intent.putExtra("UserId", contact.getPerson().getId());
+                intent.putExtra("userId",contact.getId());
+                Log.d(TAG, "onClick: " + contact.getId());
+                intent.putExtra("userName",contact.getName());
+
                 mContext.startActivity(intent);
             }
         });
@@ -76,10 +97,10 @@ public class ChatFragmentAdapter extends RecyclerView.Adapter<ChatFragmentAdapte
         public ChatFragmentAdapterViewHolder(View itemView){
 
             super(itemView);
-            //personImage = itemView.findViewById(R.id.layout_chat_contact_image);
-            //personName = itemView.findViewById(R.id.layout_chat_contact_name);
-            //message = itemView.findViewById(R.id.layout_chat_contact_message);
-            //date  = itemView.findViewById(R.id.layout_chat_contact_date_time);
+            personImage = itemView.findViewById(R.id.layout_chat_contact_image);
+            personName = itemView.findViewById(R.id.layout_chat_contact_name);
+            message = itemView.findViewById(R.id.layout_chat_contact_message);
+            date  = itemView.findViewById(R.id.layout_chat_contact_date_time);
             cardView = itemView.findViewById(R.id.card);
         }
 

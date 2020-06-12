@@ -1,46 +1,42 @@
 package com.e.maintabactivity.models;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class ContactModel {
 
-    PersonModel person;
-    String lastMessage;
-    String lastMessageDate;
+    String name;
+    int id;
+    MessageModel message;
 
-    public ContactModel(PersonModel person, String lastMessage, Date lastMessageDate) {
-        this.person = person;
-        this.lastMessage = lastMessage;
-        setLastMessageDate(lastMessageDate);
-    }
+    public ContactModel(int id, String name) {
+        this.id = id;
+        this.name = name;
+        //this.lastMessage = lastMessage;
+}
     public ContactModel() {
 
     }
 
-    public PersonModel getPerson() {
-        return person;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setPerson(PersonModel person) {
-        this.person = person;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getLastMessage() {
-        return lastMessage;
+    public void setMessage(MessageModel message) {
+        this.message = message;
     }
 
-    public void setLastMessage(String lastMessage) {
-        this.lastMessage = lastMessage;
+
+
+    public String getName() {
+        return name;
     }
 
-    public Date getLastMessageDate() {
-        return new Date(lastMessageDate);
+    public MessageModel getMessage() {
+        return message;
     }
 
-    public void setLastMessageDate(Date lastMessageDate) {
-        SimpleDateFormat ISO_8601_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss'Z'");
-         this.lastMessageDate= ISO_8601_FORMAT.format(lastMessageDate);
+    public int getId() {return id;}
 
-    }
 }

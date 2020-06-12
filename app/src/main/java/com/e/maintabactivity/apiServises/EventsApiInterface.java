@@ -2,6 +2,7 @@ package com.e.maintabactivity.apiServises;
 
 import com.e.maintabactivity.models.EventModel;
 import com.e.maintabactivity.models.EventModelResponse;
+import com.e.maintabactivity.models.NewEventModel;
 
 import java.util.List;
 import java.util.Map;
@@ -15,8 +16,8 @@ import retrofit2.http.Query;
 
 public interface EventsApiInterface {
 
-    @GET("events")
-    Call<EventModelResponse> getAllEvents();
+    @GET("event/")
+    Call<List<NewEventModel>> getAllEvents();
     // Events get karty hue unky organizers kese any hen?
 
 

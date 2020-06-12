@@ -37,6 +37,17 @@
                     android:src="@drawable/person_image"
                     android:scaleType="centerCrop"
                     />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fragment_profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="User Name"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@+id/activity_organizer_profile_image"/>
             </LinearLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>

@@ -7,17 +7,39 @@ public class MessageModel {
 
     int senderUserId;
     int receiverUserId;
+    String senderUserName;
+    String receiverUserName;
     String message;
     String date;
+    String senderFirebaseToken;
+    String receiverFirebaseToken;
+
+    public String getSenderUserName() {
+        return senderUserName;
+    }
+
+    public void setSenderUserName(String senderUserName) {
+        this.senderUserName = senderUserName;
+    }
+
+    public String getReceiverUserName() {
+        return receiverUserName;
+    }
+
+    public void setReceiverUserName(String receiverUserName) {
+        this.receiverUserName = receiverUserName;
+    }
 
     public MessageModel(){
 
     }
 
-    public MessageModel(int senderUserId, int receiverUserId, String message, Date date) {
+    public MessageModel(int senderUserId, int receiverUserId, String message, Date date, String senderName, String receiverName) {
         this.senderUserId = senderUserId;
         this.receiverUserId = receiverUserId;
         this.message = message;
+        this.senderUserName = senderName;
+        this.receiverUserName = receiverName;
         dateDate(date);
     }
 

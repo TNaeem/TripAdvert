@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +16,8 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.e.maintabactivity.apiServises.LoginApiInterface;
@@ -28,9 +32,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -42,17 +52,42 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
 
     private static final String TAG = "SignUpActivity";
     private static final int PICK_IMAGE = 1;
 
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 3, max = 30, message = "First Name must be from 3 to 30 characters in length")
+    @Pattern(sequence = 3, regex = "^[a-zA-Z ]*$", message = "First Name can only contain alphabets and spaces")
     private TextInputEditText mFirstName;
+
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 3, max = 30, message = "Last Name must be from 3 to 30 characters in length")
+    @Pattern(sequence = 3, regex = "^[a-zA-Z ]*$", message = "Last Name can only contain alphabets and spaces")
     private TextInputEditText mLastName;
+
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 3, max = 30, message = "Email must be from 3 to 30 characters in length")
+    @Pattern(sequence = 3, regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", message = "Enter valid email")
     private TextInputEditText mEmail;
+
+
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 3, max = 30, message = "Password must be from 3 to 30 characters in length")
+    @Pattern(sequence = 3, regex = "^[a-z0-9_\\-\\.]+$", message = "Password can only contain a-z 0-9 . - _")
     private TextInputEditText mPassword;
+
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 3, max = 50, message = "Address must be from 3 to 30 characters in length")
+    @Pattern(sequence = 3, regex = "^[A-Za-z0-9_\\-\\#]+$", message = "Address can only contain A-Z a-z 0-9 # - _")
     private TextInputEditText mAddress;
+
+    @NotEmpty(sequence = 1, trim = true, message = "Required")
+    @Length(sequence = 2, min = 11, max = 11, message = "Contact must be 11 characters in length")
+    @Pattern(sequence = 3, regex = "^[0-9]+$", message = "Contact can only contain 0-9")
     private TextInputEditText mContact;
+
     private MaterialButton mSignUpBtn;
     private de.hdodenhof.circleimageview.CircleImageView mImage;
 
@@ -63,6 +98,7 @@ public class SignUpActivity extends AppCompatActivity {
     private UserModel user;
     Uri imageUrl;
     private Context context = this;
+    private Validator mValidator;
 
 
 
@@ -90,6 +126,8 @@ public class SignUpActivity extends AppCompatActivity {
         userApiInterface = RetrofitInstance.getRetrofitInstance().create(UserApiInterface.class);
         bindView();
 
+
+
         mImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,27 +142,22 @@ public class SignUpActivity extends AppCompatActivity {
         mSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                personModel.setFirst_name(mFirstName.getText().toString());
-                personModel.setLast_name(mLastName.getText().toString());
-                personModel.setEmail(mEmail.getText().toString());
-                personModel.setPassword(mPassword.getText().toString());
-                personModel.setPhone_no(mContact.getText().toString());
-                personModel.setUser_type(1);
-                user.setAddress(mAddress.getText().toString());
-                personModel.setUser(user);
-                personModel.setOrganizer(new OrganizerModel());
-                doesEmailExist(personModel.getEmail());
-                if(UserSharedPreference.getUser(SignUpActivity.this) == null){
-                    postUser(personModel);
 
-                }
-                if(UserSharedPreference.getUser(SignUpActivity.this) != null){
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                    startActivity(intent);
-                }
+                mValidator.validate();
 
             }
         });
+
+
+        mValidator = new Validator(this);
+        mValidator.setValidationListener(this);
+        mValidator.setViewValidatedAction(new Validator.ViewValidatedAction() {
+            @Override
+            public void onAllRulesPassed(View view) {
+                ((TextInputLayout) view.getParent().getParent()).setError(null);
+            }
+        });
+
     }
 
     @Override
@@ -136,14 +169,13 @@ public class SignUpActivity extends AppCompatActivity {
             try{
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUrl);
                 mImage.setImageBitmap(bitmap);
-                String img = encodeBase64(bitmap);
+                String img =  encodeBase64(bitmap);
                 personModel.setImage(img);
             }catch(IOException e){
                 e.printStackTrace();
             }
         }
     }
-
 
     void bindView(){
         mImage     = findViewById(R.id.activity_add_SignUp_imgPicture);
@@ -188,9 +220,9 @@ public class SignUpActivity extends AppCompatActivity {
                 PersonModel res = response.body();
                 // Shared preference
                 UserSharedPreference.saveUser(SignUpActivity.this, res);
-                postFirebaseInstanceToken(firebaseInstanceToken);
-                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                startActivity(intent);
+                Log.d(TAG, "onResponse: user added " + res);
+                startActivity(new Intent(context, MainActivity.class));
+
             }
 
             @Override
@@ -199,27 +231,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void postFirebaseInstanceToken(String token){
-        int userId = UserSharedPreference.getUser(context).getId();
-        userApiInterface.postFirebaseInstanceId(userId, token).enqueue(new Callback<PersonModel>() {
-            @Override
-            public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
-                if(response.body()!= null ){
-                    PersonModel p = response.body();
-                    UserSharedPreference.saveUser(context, p);
-                    Log.d(TAG, "onResponse: Firebase" + response + " " + p.getFirebaseInstanceId());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<PersonModel> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-    }
-
 
     private String encodeBase64(Bitmap bitmap){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -251,4 +262,35 @@ public class SignUpActivity extends AppCompatActivity {
             Log.d(TAG, "onPrepareLoad: ");
         }
     };
+
+    @Override
+    public void onValidationSucceeded() {
+        personModel.setFirst_name(mFirstName.getText().toString());
+        personModel.setLast_name(mLastName.getText().toString());
+        personModel.setEmail(mEmail.getText().toString());
+        personModel.setPassword(mPassword.getText().toString());
+        personModel.setPhone_no(mContact.getText().toString());
+        personModel.setUser_type(1);
+        user.setAddress(mAddress.getText().toString());
+        personModel.setUser(user);
+        personModel.setOrganizer(new OrganizerModel());
+        doesEmailExist(personModel.getEmail());
+        if(UserSharedPreference.getUser(SignUpActivity.this) == null){
+            postUser(personModel);
+        }
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            ViewParent view = error.getView().getParent().getParent();
+            String message = error.getFailedRules().get(0).getMessage(this);
+
+            if (view instanceof TextInputLayout) {
+                ((TextInputLayout) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

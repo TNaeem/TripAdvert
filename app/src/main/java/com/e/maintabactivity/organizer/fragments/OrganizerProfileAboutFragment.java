@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class OrganizerProfileAboutFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "OrganizerProfileAboutFr";
     private static PersonModel personModel;
 
     // TODO: Rename and change types of parameters
@@ -82,6 +84,7 @@ public class OrganizerProfileAboutFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_organizer_profile_about, container, false);
 
+        Log.d(TAG, "onCreateView: while inflating" + personModel.getId());
         mCompanyName = view.findViewById(R.id.fragment_organizer_profile_about_org);
         mCompanyName.setText(personModel.getOrganizer().getOrganization());
         mAddress = view.findViewById(R.id.fragment_organizer_profile_about_address);
@@ -97,8 +100,10 @@ public class OrganizerProfileAboutFragment extends Fragment {
         mChatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: " + personModel.getId() );
                 Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra("UserId", personModel.getId());
+                intent.putExtra("userId", personModel.getId());
+                intent.putExtra("userName", personModel.getFirst_name() + " " + personModel.getLast_name());
                 //add contact in db if not available
                 startActivity(intent);
             }

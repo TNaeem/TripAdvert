@@ -29,6 +29,7 @@ import com.e.maintabactivity.apiServises.OrganizerApiInterface;
 import com.e.maintabactivity.apiServises.RetrofitInstance;
 import com.e.maintabactivity.models.EventModel;
 import com.e.maintabactivity.models.EventModelResponse;
+import com.e.maintabactivity.models.NewEventModel;
 import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.staticModels.StaticEventModel;
 import com.e.maintabactivity.staticModels.StaticOrganizerModel;
@@ -117,11 +118,12 @@ public class HomeFragment extends Fragment implements MainActivity.SearchableFra
         mFeaturedEventRecyclerView = view.findViewById(R.id.featured_events_recyclerView);
         mFeaturedEventRecyclerView.setLayoutManager(featuredEventLinearLayoutManager);
         mFeaturedEventRecyclerView.setAdapter(new FeaturedEventsAdapter(getContext(), trips));
+
         // Inflate the layout for this fragment
-        if(StaticEventModel.allEvents != null && StaticOrganizerModel.allOrganizers != null){
-            homeTabAdapter= new HomeTabAdapter(getContext(), StaticEventModel.allEvents ,StaticOrganizerModel.allOrganizers);
+        if(StaticEventModel.allEvents != null){
+            homeTabAdapter= new HomeTabAdapter(getContext(), StaticEventModel.allEvents, StaticOrganizerModel.allOrganizers);
         }else{
-            homeTabAdapter= new HomeTabAdapter(getContext(), new ArrayList<EventModel>() ,new ArrayList<PersonModel>());
+            homeTabAdapter= new HomeTabAdapter(getContext(), new ArrayList<NewEventModel>(), new ArrayList<PersonModel>());
         }
         mRecyclerView.setAdapter(homeTabAdapter);
         return view;
@@ -131,23 +133,25 @@ public class HomeFragment extends Fragment implements MainActivity.SearchableFra
         if(StaticEventModel.allEvents != null){
             return;
         }
-        mEventsApiInterface.getAllEvents().enqueue(new Callback<EventModelResponse>() {
+        mEventsApiInterface.getAllEvents().enqueue(new Callback<List<NewEventModel>>() {
             @Override
-            public void onResponse(Call<EventModelResponse> call, Response<EventModelResponse> response) {
+            public void onResponse(Call<List<NewEventModel>> call, Response<List<NewEventModel>> response) {
                 if(response.body() != null){
                     Log.d(TAG, "onResponse: calling events " + response);
-                    StaticEventModel.allEvents = response.body().getResults();
+                    StaticEventModel.allEvents = response.body();
                     homeTabAdapter= new HomeTabAdapter(getContext(), StaticEventModel.allEvents, StaticOrganizerModel.allOrganizers);
                     mRecyclerView.setAdapter(homeTabAdapter);
                     adapter = true;
                 }
             }
+
             @Override
-            public void onFailure(Call<EventModelResponse> call, Throwable t) {
-                Log.d(TAG, "onFailure: call " + t);
+            public void onFailure(Call<List<NewEventModel>> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
     }
+
 
     private void getAllOrganizers(){
 

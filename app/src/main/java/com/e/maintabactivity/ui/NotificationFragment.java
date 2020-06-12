@@ -112,7 +112,6 @@ public class NotificationFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<NotificationModel>> call, Throwable t) {
-
             }
         });
 

@@ -73,6 +73,7 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
+            android:id="@+id/trip_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -89,9 +90,10 @@
                     android:layout_height="wrap_content"
                     android:text="Details"
                     android:textStyle="bold"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="20sp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/activity_trip_detail_book_now_btn"
@@ -104,8 +106,6 @@
                     app:backgroundTint="@color/bookingBtnClr"
                     />
             </LinearLayout>
-
-
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/activity_trip_detail_trip_detail"
                 android:layout_width="match_parent"
@@ -121,10 +121,10 @@
                 android:layout_marginTop="5dp"
                 >
                 <com.google.android.material.textview.MaterialTextView
+                    android:textColor="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Total slots :"
-                    android:textColor="@color/colorBlack"
+                    android:text="Total Seats :"
                     android:textSize="20sp"
                     android:layout_weight="1"/>
                 <com.google.android.material.textview.MaterialTextView
@@ -143,14 +143,14 @@
                 android:layout_marginTop="5dp"
                 >
                 <com.google.android.material.textview.MaterialTextView
+                    android:textColor="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Available slots :"
-                    android:textColor="@color/colorBlack"
+                    android:text="Available Seats :"
                     android:textSize="20sp"
                     android:layout_weight="1"/>
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/activity_trip_detail_trip_available_slots"
+                    android:id="@+id/available_slots"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="20"
@@ -158,8 +158,6 @@
                     android:textSize="20sp"
                     android:layout_weight="1"/>
             </LinearLayout>
-
-
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/trip_images"
                 android:text="Trip Images"
@@ -190,7 +188,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Services Available"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="20sp"/>
 
@@ -325,10 +323,9 @@
                 android:layout_height="wrap_content"
                 android:text="Schedule"
                 android:textStyle="bold"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:layout_marginTop="10dp"/>
-
             <RelativeLayout
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
@@ -430,7 +427,16 @@
             </RelativeLayout>
 
 
+            <LinearLayout
+                android:id="@+id/schedule_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
         </LinearLayout>
+
 
     </androidx.core.widget.NestedScrollView>
 

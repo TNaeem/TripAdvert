@@ -1,5 +1,6 @@
 package com.e.maintabactivity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -14,7 +15,9 @@ import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.staticModels.StaticUserModel;
 import com.e.maintabactivity.utility.NotificationUtils;
 import com.e.maintabactivity.utility.UserSharedPreference;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -28,16 +31,20 @@ import retrofit2.Response;
 public class SplashActivity extends AppCompatActivity {
     private static final String TAG = "SplashActivity";
 
-    private Context mContext;
+    private Context mContext = this;
     OrganizerApiInterface organizerApiInterface;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mContext = SplashActivity.this;
 
+        // Setting Api Interface
         organizerApiInterface = RetrofitInstance.getRetrofitInstance().create(OrganizerApiInterface.class);
         getAllUsers();
+
+        // Setting Firebase Notification Instance
         NotificationUtils.createNotificationChannel(this);
 
         FirebaseMessaging.getInstance().subscribeToTopic("topic");
@@ -47,6 +54,8 @@ public class SplashActivity extends AppCompatActivity {
                 Log.d(TAG, "onSuccess: " + instanceIdResult.getToken());
             }
         });
+
+        // Moving to Main/Login Activity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -66,14 +75,11 @@ public class SplashActivity extends AppCompatActivity {
 
     private void getAllUsers(){
 
-        if(StaticUserModel.allUsers != null){
-            return;
-        }
         organizerApiInterface.getAllOrganizers(1).enqueue(new Callback<List<PersonModel>>() {
             @Override
             public void onResponse(Call<List<PersonModel>> call, Response<List<PersonModel>> response) {
                 if(response.body() != null){
-                    Log.d(TAG, "onResponse: calling organizers " + response);
+                    Log.d(TAG, "onResponse: calling organizers " + response.body().size());
                     StaticUserModel.allUsers = response.body();
                 }
             }

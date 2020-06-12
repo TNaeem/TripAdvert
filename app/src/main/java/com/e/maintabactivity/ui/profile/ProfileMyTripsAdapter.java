@@ -72,6 +72,8 @@ public class ProfileMyTripsAdapter extends RecyclerView.Adapter<ProfileMyTripsAd
         }else{
             mRating.setVisibility(View.GONE);
         }
+
+        // add Review Button
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,16 +87,9 @@ public class ProfileMyTripsAdapter extends RecyclerView.Adapter<ProfileMyTripsAd
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.add_review:
-                                showAddItemDialog(context, userPortfolioEventModel.getEvent().getOrganizer(),
+                                addReviewDialog(context, userPortfolioEventModel.getEvent().getOrganizer(),
                                                     userPortfolioEventModel.getEvent().getId());
                                 //handle menu1 click
-                                break;
-                            case R.id.update_review:
-
-                                //handle menu2 click
-                                break;
-                            case R.id.delete_review:
-                                //handle menu3 click
                                 break;
                         }
                         return false;
@@ -154,7 +149,7 @@ public class ProfileMyTripsAdapter extends RecyclerView.Adapter<ProfileMyTripsAd
 
     }
 
-    private void showAddItemDialog(Context c, final int ogrID, final int eventId) {
+    private void addReviewDialog(Context c, final int ogrID, final int eventId) {
         AlertDialog dialog = new AlertDialog.Builder(c)
                 .setIcon(R.drawable.logo)
                 .setTitle("Event Rating")

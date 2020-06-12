@@ -9,17 +9,24 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.e.maintabactivity.R;
 
+import com.e.maintabactivity.apiServises.RetrofitInstance;
 import com.e.maintabactivity.models.PersonModel;
+import com.e.maintabactivity.services.UserServices;
 import com.e.maintabactivity.ui.profile.ProfileViewPagerAdapter;
 import com.e.maintabactivity.utility.UserSharedPreference;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,6 +40,7 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "ProfileFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -42,21 +50,13 @@ public class ProfileFragment extends Fragment {
     private ProfileViewPagerAdapter mViewPagerAdapter;
     private Context mContext;
     private CircleImageView mProfileImage;
+    private MaterialTextView mUsername;
 
     public ProfileFragment() {
         // Required empty public constructor
         mContext = getContext();
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance(String param1, String param2) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -84,14 +84,25 @@ public class ProfileFragment extends Fragment {
 
         //Uploading Profile Image
         mProfileImage = view.findViewById(R.id.fragment_profile_image);
+        mUsername = view.findViewById(R.id.fragment_profile_name);
+
         PersonModel personModel = UserSharedPreference.getUser(getContext());
-        if(personModel != null){
-            Picasso.get().load(personModel.getImage()).into(mProfileImage);
+        Log.d(TAG, "onCreateView: " + personModel.getUser() + " " + personModel.getImage());
+
+        if(personModel.getImage() != null){
+            boolean isImageOK = UserServices.verifyImage(personModel.getImage());
+            if(isImageOK){
+                Picasso.get().load(personModel.getImage()).into(mProfileImage);
+            }else{
+                Picasso.get().load(RetrofitInstance.BASE_URL+personModel.getImage()).into(mProfileImage);
+            }
         }else{
             Picasso.get().load(R.drawable.icon_sample_profile).into(mProfileImage);
         }
 
+        mUsername.setText(personModel.getFirst_name() + " " + personModel.getLast_name());
 
+        // Setting tab layout
         mTabLayout        = view.findViewById(R.id.fragment_profile_tab_layout);
         mViewPager        = view.findViewById(R.id.fragment_profile_view_pager);
         FragmentManager fragmentManager = getChildFragmentManager();

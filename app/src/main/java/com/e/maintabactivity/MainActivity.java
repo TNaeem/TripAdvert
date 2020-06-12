@@ -1,47 +1,93 @@
 package com.e.maintabactivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 
 import com.e.maintabactivity.adapters.MainActivityViewPager;
-import com.e.maintabactivity.ui.HomeFragment;
+import com.e.maintabactivity.apiServises.RetrofitInstance;
+import com.e.maintabactivity.apiServises.UserApiInterface;
+import com.e.maintabactivity.models.FirebaseInstanceModel;
+import com.e.maintabactivity.models.PersonModel;
 import com.e.maintabactivity.utility.UserSharedPreference;
-import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private MainActivityViewPager viewPagerAdapter;
     private String[] trips = {"Trip 1", "Trip 2", "Trip 3", "Trip 4", "Trip 5"};
-    SearchableFragment searchableFragment;
-    Menu menu;
+    private SearchableFragment searchableFragment;
 
+    private Menu menu;
+    private Context context =this;
+    private String firebase_token;
+    private DatabaseReference myRef;
+    private int myId;
+
+
+    private UserApiInterface userApiInterface;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_main);
+
+        // Firebase
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("tokens");
+
+        // Setting Api Interface
+        userApiInterface = RetrofitInstance.getRetrofitInstance().create(UserApiInterface.class);
+
+        // Getting Firebase Token
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            //Checking app registration
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if(!task .isSuccessful()){
+                    Log.i(TAG, "Task Failed");
+                    return;
+                }
+
+                firebase_token = task.getResult().getToken();
+
+                postFirebaseInstanceToken();
+                myRef.child(String.valueOf(myId)).setValue(firebase_token);
+                Log.d(TAG, "onComplete: " + firebase_token);
+
+            }
+        });
+
+
+
 
         //TabLayout
         viewPagerAdapter = new MainActivityViewPager(this, getSupportFragmentManager());
@@ -93,6 +139,32 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    public void postFirebaseInstanceToken(){
+        if(UserSharedPreference.getUser(context) == null )
+            return;
+         myId = UserSharedPreference.getUser(context).getId();
+
+        FirebaseInstanceModel token = new FirebaseInstanceModel(firebase_token);
+        Log.d(TAG, "postFirebaseInstanceToken: " + myId  + " " + firebase_token) ;
+        userApiInterface.postFirebaseInstanceId(myId, token).enqueue(new Callback<PersonModel>() {
+            @Override
+            public void onResponse(Call<PersonModel> call, Response<PersonModel> response) {
+                if(response.body()!= null ){
+                    PersonModel p = response.body();
+                    UserSharedPreference.removeUser(context);
+                    UserSharedPreference.saveUser(context, p);
+                    Log.d(TAG, "onResponse: Firebase " + p.getFirebaseInstanceId());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<PersonModel> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -106,10 +178,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
-        getMenuInflater().inflate(R.menu.menu_logout, menu);
-        MenuItem logout = menu.findItem(R.id.menu_logout);
+
         getMenuInflater().inflate(R.menu.action_search, menu);
         MenuItem item = menu.findItem(R.id.search);
+        getMenuInflater().inflate(R.menu.menu_logout, menu);
+        MenuItem logout = menu.findItem(R.id.menu_logout);
         MaterialSearchView searchView = findViewById(R.id.search_view);
         searchView.setMenuItem(item);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -134,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
      return true;
     }
 
-public interface SearchableFragment{
+    public interface SearchableFragment{
         public void filter(String search);
-}
+    }
 }

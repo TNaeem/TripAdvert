@@ -38,7 +38,7 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
         BookingModel bookingModel = bookingModelList.get(position);
         holder.tripTitle.setText(bookingModel.getEventDetails().getTitle());
         holder.amount.setText(bookingModel.getEventDetails().getPrice() + " Rs");
-        holder.date.setText(bookingModel.getEventDetails().getDateOfDeparture());
+        holder.date.setText(bookingModel.getDate());
         if(bookingModel.isIs_verified()){
             holder.status.setText("Approved");
             holder.status.setTextColor(Color.GREEN);

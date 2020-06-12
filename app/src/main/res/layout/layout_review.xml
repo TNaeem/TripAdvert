@@ -59,9 +59,8 @@
                         android:layout_below="@+id/layout_review_ratting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        />
-
-
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14dp" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/layout_review_date_time"

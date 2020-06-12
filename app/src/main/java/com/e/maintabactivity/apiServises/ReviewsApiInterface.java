@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 
 public interface ReviewsApiInterface {
 
-    @GET("reviews")
+    @GET("reviews/")
     Call<List<ReviewModel>> getAllReviewsByOrganizerId(@Query("organizer") int organizerId);
 
     // Add Review

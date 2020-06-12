@@ -17,7 +17,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".ReviewsList" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -66,15 +65,11 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".UpdateProfileActivity" />
-        <activity
-            android:name=".LoginActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"></activity>
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".PrivateTripActivity" />
         <activity android:name=".TripDetailsActivity" />
         <activity android:name=".organizer.OrganizerProfileActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".organizer.ImageSliderActivity" />
     </application>
 
