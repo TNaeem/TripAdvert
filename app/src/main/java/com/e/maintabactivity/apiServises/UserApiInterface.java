@@ -32,7 +32,6 @@ public interface UserApiInterface {
     @POST("event-bookings/")
     Call<BookingModel> addBooking(@Body BookingModel bookingModel);
 
-
     //@GET("reviews/{userId}")
     @GET("events/pending/{userId}")
     Call<List<UserPortfolioEventModel>> getPendingReviewedEvents(@Path("userId") int id) ;
